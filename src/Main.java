@@ -1,4 +1,7 @@
-package com.aleksandar;
+import model.Piece;
+import model.PracticeSession;
+import repository.PieceRepository;
+import repository.PracticeSessionRepository;
 
 import java.util.Scanner;
 

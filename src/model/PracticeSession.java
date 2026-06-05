@@ -1,4 +1,7 @@
-package com.aleksandar;
+package model;
+
+import repository.PieceRepository;
+import ui.Console;
 
 import java.time.LocalDate;
 

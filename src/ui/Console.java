@@ -1,4 +1,4 @@
-package com.aleksandar;
+package ui;
 
 import java.util.Scanner;
 

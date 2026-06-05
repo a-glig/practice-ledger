@@ -1,4 +1,6 @@
-package com.aleksandar;
+package repository;
+
+import model.PracticeSession;
 
 public class PracticeSessionRepository {
 

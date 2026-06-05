@@ -1,4 +1,7 @@
-package com.aleksandar;
+package repository;
+
+import ui.Console;
+import model.Piece;
 
 public class PieceRepository {
 
