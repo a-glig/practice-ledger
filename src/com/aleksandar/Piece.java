@@ -1,6 +1,4 @@
-package model;
-
-import ui.Console;
+package com.aleksandar;
 
 public class Piece {
 

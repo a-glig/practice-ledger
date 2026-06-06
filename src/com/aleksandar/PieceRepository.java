@@ -1,7 +1,4 @@
-package repository;
-
-import ui.Console;
-import model.Piece;
+package com.aleksandar;
 
 public class PieceRepository {
 
