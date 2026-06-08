@@ -48,6 +48,7 @@ public class PieceRepository {
     }
 
     // HERE WE IMPLEMENT NEW METHODS TO USE FILES INSTEAD OF ARRAYS
+
     public void writeToFile(Piece piece) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(pieceFile, true));
@@ -61,7 +62,7 @@ public class PieceRepository {
         }
     }
 
-    public ArrayList<Piece> getData() {
+    public ArrayList<Piece> findAll() {
         try {
             BufferedReader reader = new BufferedReader(new FileReader("allPieces.txt"));
             ArrayList<Piece> pieces = new ArrayList<>();

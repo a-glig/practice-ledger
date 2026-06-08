@@ -1,6 +1,7 @@
 package com.aleksandar;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
@@ -12,12 +13,16 @@ public class MainFrame extends JFrame {
     private CardLayout cardLayout;
     private JPanel cardPanel;
 
+    private JTable pieceTable;
     private PieceRepository pieceRepo;
+    private DefaultTableModel model;
+    private JScrollPane scrollPane;
 
     MainFrame(PieceRepository pieceRepo) {
         super("Practice Schedule App");
         this.pieceRepo = pieceRepo;
         initializeComponents();
+        createPieceTable();
         initializeLayout();
         initializeActionListeners();
         setVisible(true);
@@ -30,6 +35,8 @@ public class MainFrame extends JFrame {
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
+
+        model = new DefaultTableModel();
     }
 
     private void initializeLayout() {
@@ -57,6 +64,7 @@ public class MainFrame extends JFrame {
     private JPanel createPiecePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
+        panel.add(scrollPane, BorderLayout.CENTER);
         panel.add(addPiece, BorderLayout.SOUTH);
         return panel;
     }
@@ -78,5 +86,17 @@ public class MainFrame extends JFrame {
         addPiece.addActionListener(e ->
             new AddPieceDialog(this, pieceRepo)
         );
+    }
+
+    public void createPieceTable() {
+        model.addColumn("Title");
+        model.addColumn("Composer");
+        model.addColumn("Difficulty");
+        for (Piece piece: pieceRepo.findAll()) {
+            model.addRow(new Object[] {piece.getTitle(), piece.getComposer(), piece.getDifficulty()});
+        }
+        pieceTable = new JTable(model);
+        scrollPane = new JScrollPane(pieceTable);
+        add(scrollPane);
     }
 }
