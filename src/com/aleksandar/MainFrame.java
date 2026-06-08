@@ -12,8 +12,11 @@ public class MainFrame extends JFrame {
     private CardLayout cardLayout;
     private JPanel cardPanel;
 
-    MainFrame() {
+    private PieceRepository pieceRepo;
+
+    MainFrame(PieceRepository pieceRepo) {
         super("Practice Schedule App");
+        this.pieceRepo = pieceRepo;
         initializeComponents();
         initializeLayout();
         initializeActionListeners();
@@ -73,12 +76,7 @@ public class MainFrame extends JFrame {
                 cardLayout.show(cardPanel, "pieces")
         );
         addPiece.addActionListener(e ->
-            new AddPieceDialog(this)
+            new AddPieceDialog(this, pieceRepo)
         );
     }
-
-    public static void main(String[] args) {
-        MainFrame frame = new MainFrame();
-    }
-
 }

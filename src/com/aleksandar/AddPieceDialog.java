@@ -2,6 +2,7 @@ package com.aleksandar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class AddPieceDialog extends JDialog {
 
@@ -10,10 +11,14 @@ public class AddPieceDialog extends JDialog {
     private JSpinner difficulty;
     private JButton save;
 
-    AddPieceDialog(JFrame frame) {
+    private PieceRepository pieceRepo;
+
+    AddPieceDialog(JFrame frame, PieceRepository pieceRepo) {
         super(frame, "Add Piece", true);
+        this.pieceRepo = pieceRepo;
         initializeComponents();
         initializeLayout();
+        initializeActionListener();
 
         add(createFieldPanel("Title", titleField));
         add(createFieldPanel("Composer", composerField));
@@ -48,6 +53,28 @@ public class AddPieceDialog extends JDialog {
         JPanel panel = new JPanel();
         panel.add(save);
         return panel;
+    }
+
+    private String getTitleText() {return titleField.getText();}
+
+    private String getComposerText() {return composerField.getText();}
+
+    private int getDifficulty() {return (Integer) difficulty.getValue();}
+
+    // TESTING FUNCTIONALITY OF METHODS REGARDING PIECE REPOSITORY
+    private void initializeActionListener() {
+        save.addActionListener(e -> {
+            String title = getTitleText();
+            String composer = getComposerText();
+            int difficulty = getDifficulty();
+            pieceRepo.writeToFile(new Piece(title, composer, difficulty));
+            pieceRepo.add(new Piece(title, composer, difficulty));
+            // TEST METHOD getData()
+            ArrayList<Piece> data = pieceRepo.getData();
+            for (Piece element: data) {
+                System.out.println(element.getTitle());
+            }
+        });
     }
 
 }

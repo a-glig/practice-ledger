@@ -30,4 +30,8 @@ public class Piece {
     public String getTitle() {
         return title;
     }
+
+    public String getComposer() {return composer;}
+
+    public int getDifficulty() {return difficulty;}
 }
