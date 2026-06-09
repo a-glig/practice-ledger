@@ -8,7 +8,7 @@ public class PieceRepository {
     private Piece[] pieces;
     private int count;
 
-    private File pieceFile = new File("allPieces.txt");
+    private final File pieceFile = new File("allPieces.txt");
 
     public PieceRepository(int capacity) {
         pieces = new Piece[capacity];
@@ -49,29 +49,25 @@ public class PieceRepository {
 
     // HERE WE IMPLEMENT NEW METHODS TO USE FILES INSTEAD OF ARRAYS
 
-    public void writeToFile(Piece piece) {
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(pieceFile, true));
-            writer.write(piece.getTitle() + ",");
-            writer.write(piece.getComposer() + ",");
-            writer.write(String.valueOf(piece.getDifficulty()));
+    public void save(Piece piece) {
+        try (BufferedWriter writer = new BufferedWriter(
+                new FileWriter(pieceFile, true))){
+            writer.write(piece.toFileString());
             writer.newLine();
-            writer.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     public ArrayList<Piece> findAll() {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("allPieces.txt"));
+        try (BufferedReader reader = new BufferedReader(
+                new FileReader(pieceFile))) {
             ArrayList<Piece> pieces = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 pieces.add(new Piece(parts[0], parts[1], Integer.parseInt(parts[2])));
             }
-            reader.close();
             return pieces;
         } catch (IOException e) {
             throw new RuntimeException(e);

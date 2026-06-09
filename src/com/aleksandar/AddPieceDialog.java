@@ -67,7 +67,7 @@ public class AddPieceDialog extends JDialog {
             String title = getTitleText();
             String composer = getComposerText();
             int difficulty = getDifficulty();
-            pieceRepo.writeToFile(new Piece(title, composer, difficulty));
+            pieceRepo.save(new Piece(title, composer, difficulty));
             // TO BE REMOVED LATER
             pieceRepo.add(new Piece(title, composer, difficulty));
         });

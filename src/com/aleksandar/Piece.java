@@ -20,11 +20,8 @@ public class Piece {
         System.out.println();
     }
 
-    public static Piece createPieceFromInput() {
-        String title = Console.readText("Title: ");
-        String composer = Console.readText("Composer: ");
-        int difficulty = (int) Console.readNumber("Difficulty: ", 0,10);
-        return new Piece(title, composer, difficulty);
+    public String toFileString() {
+         return getTitle() + "," + getComposer() + "," + getDifficulty();
     }
 
     public String getTitle() {
