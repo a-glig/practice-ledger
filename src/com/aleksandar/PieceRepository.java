@@ -5,13 +5,29 @@ import java.util.ArrayList;
 
 public class PieceRepository {
 
-    private final File pieceFile = new File("allPieces.txt");
+    private final File pieceFile = new File("pieces.txt");
 
     public void save(Piece piece) {
         try (BufferedWriter writer = new BufferedWriter(
                 new FileWriter(pieceFile, true))){
             writer.write(piece.toFileString());
             writer.newLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void delete(Piece piece) {
+        ArrayList<Piece> pieces = findAll();
+        pieces.remove(piece);
+        boolean removed = pieces.remove(piece);
+        System.out.println(removed);
+        try(BufferedWriter writer = new BufferedWriter(
+                new FileWriter(pieceFile))) {
+            for (Piece currentPiece: pieces) {
+                writer.write(currentPiece.toFileString());
+                writer.newLine();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

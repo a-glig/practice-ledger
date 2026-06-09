@@ -11,10 +11,12 @@ public class AddPieceDialog extends JDialog {
     private JSpinner difficulty;
     private JButton save;
 
+    private MainFrame frame;
     private PieceRepository pieceRepo;
 
-    AddPieceDialog(JFrame frame, PieceRepository pieceRepo) {
+    AddPieceDialog(MainFrame frame, PieceRepository pieceRepo) {
         super(frame, "Add Piece", true);
+        this.frame = frame;
         this.pieceRepo = pieceRepo;
         initializeComponents();
         initializeLayout();
@@ -61,13 +63,14 @@ public class AddPieceDialog extends JDialog {
 
     private int getDifficulty() {return (Integer) difficulty.getValue();}
 
-    // TESTING FUNCTIONALITY OF METHODS REGARDING PIECE REPOSITORY
     private void initializeActionListener() {
         save.addActionListener(e -> {
             String title = getTitleText();
             String composer = getComposerText();
             int difficulty = getDifficulty();
             pieceRepo.save(new Piece(title, composer, difficulty));
+            frame.refreshPieceTable();
+            dispose();
         });
     }
 

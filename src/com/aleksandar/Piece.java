@@ -1,5 +1,7 @@
 package com.aleksandar;
 
+import java.util.Objects;
+
 public class Piece {
 
     private String title;
@@ -23,4 +25,17 @@ public class Piece {
     public String getComposer() {return composer;}
 
     public int getDifficulty() {return difficulty;}
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Piece piece = (Piece) o;
+        return difficulty == piece.difficulty && Objects.equals(title, piece.title) &&
+                Objects.equals(composer, piece.composer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, composer, difficulty);
+    }
 }
