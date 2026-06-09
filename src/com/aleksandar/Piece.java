@@ -12,14 +12,6 @@ public class Piece {
         this.difficulty = difficulty;
     }
 
-    public void show() {
-        System.out.println();
-        System.out.println(this.title);
-        System.out.println(this.composer);
-        System.out.println(this.difficulty);
-        System.out.println();
-    }
-
     public String toFileString() {
          return getTitle() + "," + getComposer() + "," + getDifficulty();
     }

@@ -26,15 +26,4 @@ public class PracticeSession {
         System.out.println();
     }
 
-    public static PracticeSession createSessionFromInput(PieceRepository pieceRepo) {
-        Piece piece = pieceRepo.selectPiece();
-        String notes = "";
-        if (piece == null)
-            return null;
-        short duration = (short) Console.readNumber("Duration (in Minutes): ",1);
-        if (Console.getYesOrNo("Provide notes? (y/n)"))
-            notes = Console.readText("Notes: ");
-        return new PracticeSession(piece, duration, notes);
-    }
-
 }

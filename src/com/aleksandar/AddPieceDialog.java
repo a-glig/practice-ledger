@@ -68,8 +68,6 @@ public class AddPieceDialog extends JDialog {
             String composer = getComposerText();
             int difficulty = getDifficulty();
             pieceRepo.save(new Piece(title, composer, difficulty));
-            // TO BE REMOVED LATER
-            pieceRepo.add(new Piece(title, composer, difficulty));
         });
     }
 
