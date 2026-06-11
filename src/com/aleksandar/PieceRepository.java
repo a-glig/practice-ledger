@@ -20,8 +20,6 @@ public class PieceRepository {
     public void delete(Piece piece) {
         ArrayList<Piece> pieces = findAll();
         pieces.remove(piece);
-        boolean removed = pieces.remove(piece);
-        System.out.println(removed);
         try(BufferedWriter writer = new BufferedWriter(
                 new FileWriter(pieceFile))) {
             for (Piece currentPiece: pieces) {
@@ -40,7 +38,7 @@ public class PieceRepository {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                pieces.add(new Piece(parts[0], parts[1], Integer.parseInt(parts[2])));
+                pieces.add(new Piece(parts[0], parts[1], Integer.parseInt(parts[2]),parts[3]));
             }
             return pieces;
         } catch (IOException e) {

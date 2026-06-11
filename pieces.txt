@@ -1,3 +1,1 @@
-Moonlight Sonata,Beethoven,6
-Invention 1,Bach,3
-Prelude C Sharp Minor,Rachmaninoff,6
+Invention 1,J.S. Bach,3,Repertoire

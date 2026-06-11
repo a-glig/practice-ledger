@@ -99,6 +99,7 @@ public class MainFrame extends JFrame {
     private JPanel createPiecePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
+        panel.add(new JLabel("Repertoire"), BorderLayout.NORTH);
         panel.add(scrollPane, BorderLayout.CENTER);
         panel.add(createPieceButtonPanel(), BorderLayout.SOUTH);
         return panel;
