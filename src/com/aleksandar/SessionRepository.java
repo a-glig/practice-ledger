@@ -1,6 +1,6 @@
 package com.aleksandar;
 
-public class PracticeSessionRepository {
+public class SessionRepository {
 
     // Repository storing practice sessions ordered by the date
 

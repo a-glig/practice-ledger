@@ -17,13 +17,11 @@ public class PracticeSession {
         this.notes = notes;
     }
 
-    public void show() {
-        System.out.println();
-        System.out.println(this.date);
-        System.out.println(this.piece.getTitle());
-        System.out.println(this.duration);
-        System.out.println(this.notes);
-        System.out.println();
-    }
+    public LocalDate getDate() {return date;}
 
+    public Piece getPiece() {return piece;}
+
+    public short getDuration() {return duration;}
+
+    public String getNotes() {return notes;}
 }

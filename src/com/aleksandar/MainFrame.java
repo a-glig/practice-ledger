@@ -11,6 +11,8 @@ public class MainFrame extends JFrame {
     private JButton sessions;
     private JButton pieces;
 
+    private JButton add;
+
     private CardLayout cardLayout;
     private JPanel cardPanel;
 
@@ -57,7 +59,8 @@ public class MainFrame extends JFrame {
     private JPanel createSessionPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        panel.add(new JLabel("This Panel shows the Practice Sessions"));
+        add = new JButton("Add Session");
+        panel.add(add,BorderLayout.SOUTH);
         return panel;
     }
 
@@ -68,5 +71,7 @@ public class MainFrame extends JFrame {
         pieces.addActionListener(e ->
                 cardLayout.show(cardPanel, "pieces")
         );
+        add.addActionListener(e ->
+                new AddSessionDialog(this, pieceRepo));
     }
 }

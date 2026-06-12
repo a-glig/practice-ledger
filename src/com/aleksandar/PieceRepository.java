@@ -45,4 +45,19 @@ public class PieceRepository {
             throw new RuntimeException(e);
         }
     }
+
+    public ArrayList<String> getTitles() {
+        try (BufferedReader reader = new BufferedReader(
+                new FileReader(pieceFile))) {
+            ArrayList<String> titles = new ArrayList<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                titles.add(parts[0]);
+            }
+            return titles;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

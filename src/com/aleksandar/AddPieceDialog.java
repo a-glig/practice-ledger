@@ -40,11 +40,11 @@ public class AddPieceDialog extends JDialog {
     }
 
     private void initializeComponents() {
-        technique = new JRadioButton("Technique");
-        repertoire = new JRadioButton("Repertoire");
         titleField = new JTextField(20);
         composerField = new JTextField(20);
         difficulty = new JSpinner(new SpinnerNumberModel(5,1,10,1));
+        technique = new JRadioButton("Technique");
+        repertoire = new JRadioButton("Repertoire");
         save = new JButton("Save");
     }
 
