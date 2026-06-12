@@ -2,9 +2,11 @@ package com.aleksandar;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class AddPieceDialog extends JDialog {
+
+    private MainFrame frame;
+    private PiecePanel piecePanel;
 
     private JRadioButton technique;
     private JRadioButton repertoire;
@@ -16,13 +18,11 @@ public class AddPieceDialog extends JDialog {
 
     private JButton save;
 
-    private MainFrame frame;
-    private PieceRepository pieceRepo;
-
-    AddPieceDialog(MainFrame frame, PieceRepository pieceRepo) {
+    AddPieceDialog(MainFrame frame, PiecePanel piecePanel) {
         super(frame, "Add Piece", true);
         this.frame = frame;
-        this.pieceRepo = pieceRepo;
+        this.piecePanel = piecePanel;
+
         initializeComponents();
         initializeLayout();
         initializeActionListener();
@@ -88,6 +88,17 @@ public class AddPieceDialog extends JDialog {
         return panel;
     }
 
+    private void initializeActionListener() {
+        save.addActionListener(e -> {
+            String title = getTitleText();
+            String composer = getComposerText();
+            int difficulty = getDifficulty();
+            String category = getCategory();
+            piecePanel.addPieceToTable(new Piece(title, composer, difficulty, category));
+            dispose();
+        });
+    }
+
     private String getTitleText() {return titleField.getText();}
 
     private String getComposerText() {return composerField.getText();}
@@ -95,17 +106,4 @@ public class AddPieceDialog extends JDialog {
     private int getDifficulty() {return (Integer) difficulty.getValue();}
 
     private String getCategory() {return technique.isSelected() ? "Technique": "Repertoire";}
-
-    private void initializeActionListener() {
-        save.addActionListener(e -> {
-            String title = getTitleText();
-            String composer = getComposerText();
-            int difficulty = getDifficulty();
-            String category = getCategory();
-            pieceRepo.save(new Piece(title, composer, difficulty, category));
-            frame.refreshPieceTable();
-            dispose();
-        });
-    }
-
 }
