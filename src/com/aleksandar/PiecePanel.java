@@ -30,19 +30,19 @@ public class PiecePanel extends JPanel {
         this.pieceRepo = pieceRepo;
 
         initializeComponents();
-        createPieceTable();
         initializeLayout();
         initializeActionListeners();
     }
 
     private void initializeComponents() {
+        model = new DefaultTableModel(PIECE_COLUMNS,0);
+        initializePieceTable();
+
         addPiece = new JButton("Add Piece");
         deletePiece = new JButton("Delete Piece");
-
-        model = new DefaultTableModel(PIECE_COLUMNS,0);
     }
 
-    private void createPieceTable() {
+    private void initializePieceTable() {
         loadPiecesIntoTable();
         displayedPieces = pieceRepo.findAll();
         pieceTable = new JTable(model);
@@ -73,13 +73,13 @@ public class PiecePanel extends JPanel {
         pieceTable.setModel(model);
     }
 
-    private void initializeLayout () {
+    private void initializeLayout() {
         setLayout(new BorderLayout());
         add(scrollPane, BorderLayout.CENTER);
-        add(createPieceButtonPanel(), BorderLayout.SOUTH);
+        add(initializeButtonPanel(), BorderLayout.SOUTH);
     }
 
-    private JPanel createPieceButtonPanel() {
+    private JPanel initializeButtonPanel() {
         JPanel panel = new JPanel();
         panel.add(addPiece);
         panel.add(deletePiece);
