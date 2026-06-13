@@ -32,6 +32,7 @@ public class PiecePanel extends JPanel {
         initializeComponents();
         initializeLayout();
         initializeActionListeners();
+        loadPiecesIntoTable();
     }
 
     private void initializeComponents() {
@@ -43,34 +44,10 @@ public class PiecePanel extends JPanel {
     }
 
     private void initializePieceTable() {
-        loadPiecesIntoTable();
         displayedPieces = pieceRepo.findAll();
         pieceTable = new JTable(model);
         scrollPane = new JScrollPane(pieceTable);
         add(scrollPane);
-    }
-
-    private void loadPiecesIntoTable() {
-        for (Piece piece: pieceRepo.findAll()) {
-            model.addRow(new Object[]{
-                    piece.getTitle(),
-                    piece.getComposer(),
-                    piece.getDifficulty(),
-                    piece.getCategory()
-            });
-        }
-    }
-
-    public void addPieceToTable(Piece piece) {
-        pieceRepo.save(piece);
-        refreshPieceTable();
-    }
-
-    public void refreshPieceTable() {
-        model.setRowCount(0);
-        loadPiecesIntoTable();
-        displayedPieces = pieceRepo.findAll();
-        pieceTable.setModel(model);
     }
 
     private void initializeLayout() {
@@ -96,6 +73,29 @@ public class PiecePanel extends JPanel {
             pieceRepo.delete(piece);
             refreshPieceTable();
         });
+    }
+
+    private void loadPiecesIntoTable() {
+        for (Piece piece: pieceRepo.findAll()) {
+            model.addRow(new Object[]{
+                    piece.getTitle(),
+                    piece.getComposer(),
+                    piece.getDifficulty(),
+                    piece.getCategory()
+            });
+        }
+    }
+
+    public void addPieceToTable(Piece piece) {
+        pieceRepo.save(piece);
+        refreshPieceTable();
+    }
+
+    public void refreshPieceTable() {
+        model.setRowCount(0);
+        loadPiecesIntoTable();
+        displayedPieces = pieceRepo.findAll();
+        pieceTable.setModel(model);
     }
 
 }

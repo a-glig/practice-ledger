@@ -1,6 +1,7 @@
 package com.aleksandar;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class SessionRepository {
@@ -24,7 +25,12 @@ public class SessionRepository {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                sessions.add(new PracticeSession(parts[1],Integer.parseInt(parts[2]),parts[3]));
+                sessions.add(new PracticeSession(
+                        parts[0],
+                        parts[1],
+                        Integer.parseInt(parts[2]),
+                        parts[3])
+                );
             }
             return sessions;
         } catch (IOException e) {

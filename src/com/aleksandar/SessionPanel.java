@@ -34,7 +34,8 @@ public class SessionPanel extends JPanel {
 
         initializeComponents();
         initializeLayout();
-        initializeActionListener();
+        initializeListeners();
+        loadData();
     }
 
     private void initializeComponents() {
@@ -49,33 +50,15 @@ public class SessionPanel extends JPanel {
     }
 
     private void initializeDateList() {
-        loadDatesIntoList();
         dateList = new JList<>(listModel);
         scrollPaneList = new JScrollPane(dateList);
         add(scrollPaneList);
     }
 
-    private void loadDatesIntoList() {
-        for (PracticeSession session : sessionRepo.findAll()) {
-            listModel.addElement(session.getDate().toString());
-        }
-    }
-
     private void initializeSessionTable() {
-        loadSessionsIntoTable();
         sessionTable = new JTable(tableModel);
         scrollPaneTable = new JScrollPane(sessionTable);
         add(scrollPaneTable);
-    }
-
-    private void loadSessionsIntoTable() {
-        for (PracticeSession session : sessionRepo.findAll()) {
-            tableModel.addRow(new Object[]{
-                    session.getPieceTitle(),
-                    session.getDuration(),
-                    session.getNotes()
-            });
-        }
     }
 
     private void initializeSplitPane() {
@@ -98,8 +81,42 @@ public class SessionPanel extends JPanel {
         return panel;
     }
 
-    private void initializeActionListener() {
+    private void initializeListeners() {
         addSession.addActionListener(e ->
                 new AddSessionDialog(frame, pieceRepo, sessionRepo));
+        dateList.addListSelectionListener(e -> {
+            String selectedDate = dateList.getSelectedValue();
+            refreshSessionTable(selectedDate);
+        });
+    }
+
+    private void loadData() {
+        loadDatesIntoList();
+        if (!listModel.isEmpty()) {
+            dateList.setSelectedIndex(0);
+        }
+    }
+
+    private void loadDatesIntoList() {
+        for (PracticeSession session : sessionRepo.findAll()) {
+            if (!listModel.contains(session.getDate()))
+                listModel.addElement(session.getDate());
+        }
+    }
+
+
+    private void loadSessionsForDate(String selectedDate) {
+        for (PracticeSession session : sessionRepo.findAll()) {
+            if (selectedDate.equals(session.getDate())) {
+                tableModel.addRow(new Object[]{session.getPieceTitle(), session.getDuration(), session.getNotes()
+                });
+            }
+        }
+    }
+
+    private void refreshSessionTable(String selectedDate) {
+        tableModel.setRowCount(0);
+        loadSessionsForDate(selectedDate);
+        sessionTable.setModel(tableModel);
     }
 }

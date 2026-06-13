@@ -4,14 +4,18 @@ import java.time.LocalDate;
 
 public class PracticeSession {
 
-    private LocalDate date;
-
+    private String date;
     private String pieceTitle;
     private int duration;
     private String notes;
 
-    public PracticeSession(String pieceTitle, int duration, String notes) {
-        this.date = LocalDate.now();
+    public PracticeSession(
+            String date,
+            String pieceTitle,
+            int duration,
+            String notes
+    ) {
+        this.date = date;
         this.pieceTitle = pieceTitle;
         this.duration = duration;
         this.notes = notes;
@@ -21,7 +25,7 @@ public class PracticeSession {
         return getDate() + "," + getPieceTitle() + "," + getDuration() + "," + getNotes();
     }
 
-    public LocalDate getDate() {return date;}
+    public String getDate() {return date;}
 
     public String getPieceTitle() {return pieceTitle;}
 

@@ -2,6 +2,7 @@ package com.aleksandar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class AddSessionDialog extends JDialog {
@@ -75,7 +76,12 @@ public class AddSessionDialog extends JDialog {
             String pieceTitle = getPieceTitle();
             int duration = getDuration();
             String notes = getNotesText();
-            PracticeSession session = new PracticeSession(pieceTitle, duration, notes);
+            PracticeSession session = new PracticeSession(
+                    LocalDate.now().toString(),
+                    pieceTitle,
+                    duration,
+                    notes
+            );
             sessionRepo.save(session);
             dispose();
         });
