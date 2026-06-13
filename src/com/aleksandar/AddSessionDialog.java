@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class AddSessionDialog extends JDialog {
 
-    private MainFrame frame;
     private PieceRepository pieceRepo;
+    private SessionRepository sessionRepo;
 
     private ArrayList<String> pieceTitleList;
     JComboBox<String> pieceTitles;
@@ -17,13 +17,19 @@ public class AddSessionDialog extends JDialog {
 
     private JButton save;
 
-    AddSessionDialog(MainFrame frame, PieceRepository pieceRepo) {
+    AddSessionDialog(
+            MainFrame frame,
+            PieceRepository pieceRepo,
+            SessionRepository sessionRepo
+    ) {
         super(frame, "Add Session", true);
-        this.frame = frame;
         this.pieceRepo = pieceRepo;
+        this.sessionRepo = sessionRepo;
 
         initializeComponents();
         initializeLayout();
+        initializeActionListener();
+
         add(createFieldPanel("Piece", pieceTitles));
         add(createFieldPanel("Duration (in min)", duration));
         add(createFieldPanel("Notes", notesField));
@@ -64,9 +70,20 @@ public class AddSessionDialog extends JDialog {
         return panel;
     }
 
+    private void initializeActionListener() {
+        save.addActionListener(e -> {
+            String pieceTitle = getPieceTitle();
+            int duration = getDuration();
+            String notes = getNotesText();
+            PracticeSession session = new PracticeSession(pieceTitle, duration, notes);
+            sessionRepo.save(session);
+            dispose();
+        });
+    }
+
     private String getPieceTitle() {return (String) pieceTitles.getSelectedItem();}
 
-    private short getDuration() {return (Short) duration.getValue();}
+    private int getDuration() {return (Integer) duration.getValue();}
 
     private String getNotesText() {return notesField.getText();}
 }

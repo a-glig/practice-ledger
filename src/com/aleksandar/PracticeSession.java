@@ -6,22 +6,26 @@ public class PracticeSession {
 
     private LocalDate date;
 
-    private Piece piece;
-    private short duration;
+    private String pieceTitle;
+    private int duration;
     private String notes;
 
-    public PracticeSession(Piece piece, short duration, String notes) {
+    public PracticeSession(String pieceTitle, int duration, String notes) {
         this.date = LocalDate.now();
-        this.piece = piece;
+        this.pieceTitle = pieceTitle;
         this.duration = duration;
         this.notes = notes;
     }
 
+    public String toFileString() {
+        return getDate() + "," + getPieceTitle() + "," + getDuration() + "," + getNotes();
+    }
+
     public LocalDate getDate() {return date;}
 
-    public Piece getPiece() {return piece;}
+    public String getPieceTitle() {return pieceTitle;}
 
-    public short getDuration() {return duration;}
+    public int getDuration() {return duration;}
 
     public String getNotes() {return notes;}
 }

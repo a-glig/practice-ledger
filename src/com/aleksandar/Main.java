@@ -4,6 +4,7 @@ public class Main {
 
     public static void main(String[] args) {
         PieceRepository pieceRepo = new PieceRepository();
-        new MainFrame(pieceRepo);
+        SessionRepository sessionRepo = new SessionRepository();
+        new MainFrame(pieceRepo, sessionRepo);
     }
 }

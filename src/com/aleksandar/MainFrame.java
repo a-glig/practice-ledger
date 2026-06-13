@@ -7,18 +7,19 @@ import java.awt.*;
 public class MainFrame extends JFrame {
 
     private PieceRepository pieceRepo;
+    private SessionRepository sessionRepo;
 
     private JButton sessions;
     private JButton pieces;
 
-    private JButton add;
-
     private CardLayout cardLayout;
     private JPanel cardPanel;
 
-    MainFrame(PieceRepository pieceRepo) {
+    MainFrame(PieceRepository pieceRepo, SessionRepository sessionRepo) {
         super("Practice Schedule App");
         this.pieceRepo = pieceRepo;
+        this.sessionRepo = sessionRepo;
+
         initializeComponents();
         initializeLayout();
         initializeActionListeners();
@@ -50,18 +51,9 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createCardPanel() {
-        cardPanel.add(createSessionPanel(), "sessions");
+        cardPanel.add(new SessionPanel(this, sessionRepo, pieceRepo), "sessions");
         cardPanel.add(new PiecePanel(this, pieceRepo), "pieces");
         return cardPanel;
-    }
-
-
-    private JPanel createSessionPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        add = new JButton("Add Session");
-        panel.add(add,BorderLayout.SOUTH);
-        return panel;
     }
 
     private void initializeActionListeners() {
@@ -71,7 +63,5 @@ public class MainFrame extends JFrame {
         pieces.addActionListener(e ->
                 cardLayout.show(cardPanel, "pieces")
         );
-        add.addActionListener(e ->
-                new AddSessionDialog(this, pieceRepo));
     }
 }

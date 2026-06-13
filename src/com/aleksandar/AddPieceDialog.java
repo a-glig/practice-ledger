@@ -5,7 +5,6 @@ import java.awt.*;
 
 public class AddPieceDialog extends JDialog {
 
-    private MainFrame frame;
     private PiecePanel piecePanel;
 
     private JRadioButton technique;
@@ -20,7 +19,6 @@ public class AddPieceDialog extends JDialog {
 
     AddPieceDialog(MainFrame frame, PiecePanel piecePanel) {
         super(frame, "Add Piece", true);
-        this.frame = frame;
         this.piecePanel = piecePanel;
 
         initializeComponents();
