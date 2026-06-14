@@ -1,7 +1,6 @@
 package com.aleksandar;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class SessionRepository {
@@ -13,6 +12,20 @@ public class SessionRepository {
                 new FileWriter(sessionFile, true))){
             writer.write(session.toFileString());
             writer.newLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void delete(PracticeSession session) {
+        ArrayList<PracticeSession> sessions = findAll();
+        sessions.remove(session);
+        try(BufferedWriter writer = new BufferedWriter(
+                new FileWriter(sessionFile))) {
+            for (PracticeSession currentSession : sessions) {
+                writer.write(currentSession.toFileString());
+                writer.newLine();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -36,6 +49,16 @@ public class SessionRepository {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public ArrayList<PracticeSession> findByDate(String date) {
+        ArrayList<PracticeSession> sessions = new ArrayList<>();
+        for (PracticeSession session: findAll()) {
+            if (date.equals(session.getDate())) {
+                sessions.add(session);
+            }
+        }
+        return sessions;
     }
 
 }

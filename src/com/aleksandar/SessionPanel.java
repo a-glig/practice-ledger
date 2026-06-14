@@ -3,6 +3,7 @@ package com.aleksandar;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class SessionPanel extends JPanel {
 
@@ -17,15 +18,17 @@ public class SessionPanel extends JPanel {
     private DefaultTableModel tableModel;
     private JTable sessionTable;
     private JScrollPane scrollPaneTable;
+    private ArrayList<PracticeSession> displayedSessions;
+
     private static final String[] SESSION_COLUMNS = {
             "Piece",
             "Duration (in min)",
             "Comments"
     };
-
     private JSplitPane splitPane;
 
     private JButton addSession;
+    private JButton deleteSession;
 
     SessionPanel(MainFrame frame, SessionRepository sessionRepo, PieceRepository pieceRepo) {
         this.frame = frame;
@@ -47,6 +50,7 @@ public class SessionPanel extends JPanel {
         initializeSplitPane();
 
         addSession = new JButton("Add Session");
+        deleteSession = new JButton("Delete Session");
     }
 
     private void initializeDateList() {
@@ -78,12 +82,19 @@ public class SessionPanel extends JPanel {
     private JPanel initializeButtonPanel() {
         JPanel panel = new JPanel();
         panel.add(addSession);
+        panel.add(deleteSession);
         return panel;
     }
 
     private void initializeListeners() {
         addSession.addActionListener(e ->
-                new AddSessionDialog(frame, pieceRepo, sessionRepo));
+                new AddSessionDialog(frame, pieceRepo, this));
+        deleteSession.addActionListener(e-> {
+            int selectedRow = sessionTable.getSelectedRow();
+            PracticeSession session = displayedSessions.get(selectedRow);
+            sessionRepo.delete(session);
+            refreshSessionTable(session.getDate());
+        });
         dateList.addListSelectionListener(e -> {
             String selectedDate = dateList.getSelectedValue();
             refreshSessionTable(selectedDate);
@@ -94,6 +105,7 @@ public class SessionPanel extends JPanel {
         loadDatesIntoList();
         if (!listModel.isEmpty()) {
             dateList.setSelectedIndex(0);
+            displayedSessions = sessionRepo.findByDate(dateList.getSelectedValue());
         }
     }
 
@@ -104,19 +116,25 @@ public class SessionPanel extends JPanel {
         }
     }
 
-
     private void loadSessionsForDate(String selectedDate) {
-        for (PracticeSession session : sessionRepo.findAll()) {
-            if (selectedDate.equals(session.getDate())) {
-                tableModel.addRow(new Object[]{session.getPieceTitle(), session.getDuration(), session.getNotes()
-                });
-            }
+        for (PracticeSession session : sessionRepo.findByDate(selectedDate)) {
+            tableModel.addRow(new Object[]{
+                    session.getPieceTitle(), session.getDuration(), session.getNotes()
+            });
         }
+    }
+
+    public void addSessionToTable(PracticeSession session) {
+        sessionRepo.save(session);
+        refreshSessionTable(session.getDate());
+        if (!listModel.contains(session.getDate()))
+            listModel.addElement(session.getDate());
     }
 
     private void refreshSessionTable(String selectedDate) {
         tableModel.setRowCount(0);
         loadSessionsForDate(selectedDate);
+        displayedSessions = sessionRepo.findByDate(selectedDate);
         sessionTable.setModel(tableModel);
     }
 }

@@ -1,6 +1,7 @@
 package com.aleksandar;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class PracticeSession {
 
@@ -32,4 +33,12 @@ public class PracticeSession {
     public int getDuration() {return duration;}
 
     public String getNotes() {return notes;}
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        PracticeSession that = (PracticeSession) o;
+        return duration == that.duration && Objects.equals(date, that.date)
+                && Objects.equals(pieceTitle, that.pieceTitle) && Objects.equals(notes, that.notes);
+    }
 }

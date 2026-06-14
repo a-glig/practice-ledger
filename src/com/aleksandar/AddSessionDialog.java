@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class AddSessionDialog extends JDialog {
 
     private PieceRepository pieceRepo;
-    private SessionRepository sessionRepo;
+    private SessionPanel sessionPanel;
 
     private ArrayList<String> pieceTitleList;
     JComboBox<String> pieceTitles;
@@ -21,11 +21,11 @@ public class AddSessionDialog extends JDialog {
     AddSessionDialog(
             MainFrame frame,
             PieceRepository pieceRepo,
-            SessionRepository sessionRepo
+            SessionPanel sessionPanel
     ) {
         super(frame, "Add Session", true);
         this.pieceRepo = pieceRepo;
-        this.sessionRepo = sessionRepo;
+        this.sessionPanel = sessionPanel;
 
         initializeComponents();
         initializeLayout();
@@ -76,13 +76,9 @@ public class AddSessionDialog extends JDialog {
             String pieceTitle = getPieceTitle();
             int duration = getDuration();
             String notes = getNotesText();
-            PracticeSession session = new PracticeSession(
-                    LocalDate.now().toString(),
-                    pieceTitle,
-                    duration,
-                    notes
-            );
-            sessionRepo.save(session);
+            sessionPanel.addSessionToTable(new PracticeSession(
+                    LocalDate.now().toString(), pieceTitle, duration, notes
+            ));
             dispose();
         });
     }
