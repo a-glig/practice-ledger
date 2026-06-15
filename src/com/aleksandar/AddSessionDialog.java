@@ -73,14 +73,27 @@ public class AddSessionDialog extends JDialog {
 
     private void initializeActionListener() {
         save.addActionListener(e -> {
-            String pieceTitle = getPieceTitle();
-            int duration = getDuration();
-            String notes = getNotesText();
-            sessionPanel.addSessionToTable(new PracticeSession(
-                    LocalDate.now().toString(), pieceTitle, duration, notes
-            ));
-            dispose();
+            if (isValidInput()) {
+                String pieceTitle = getPieceTitle();
+                int duration = getDuration();
+                String notes = getNotesText();
+
+                sessionPanel.addSessionToTable(new PracticeSession(
+                        LocalDate.now().toString(), pieceTitle, duration, notes
+                ));
+                dispose();
+            }
         });
+    }
+
+    private boolean isValidInput() {
+        if (getNotesText().contains("|")) {
+            JOptionPane.showMessageDialog(
+                    this, "Please don't use the (|) symbol in your input."
+            );
+            return false;
+        }
+        return true;
     }
 
     private String getPieceTitle() {return (String) pieceTitles.getSelectedItem();}

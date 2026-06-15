@@ -37,7 +37,7 @@ public class PieceRepository {
             ArrayList<Piece> pieces = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
+                String[] parts = line.split("\\|");
                 pieces.add(new Piece(parts[0], parts[1], Integer.parseInt(parts[2]),parts[3]));
             }
             return pieces;
@@ -52,7 +52,7 @@ public class PieceRepository {
             ArrayList<String> titles = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
+                String[] parts = line.split("\\|");
                 titles.add(parts[0]);
             }
             return titles;

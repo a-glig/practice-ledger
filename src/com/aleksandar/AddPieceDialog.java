@@ -88,13 +88,26 @@ public class AddPieceDialog extends JDialog {
 
     private void initializeActionListener() {
         save.addActionListener(e -> {
-            String title = getTitleText();
-            String composer = getComposerText();
-            int difficulty = getDifficulty();
-            String category = getCategory();
-            piecePanel.addPieceToTable(new Piece(title, composer, difficulty, category));
-            dispose();
+            if (isValidInput()) {
+                String title = getTitleText();
+                String composer = getComposerText();
+                int difficulty = getDifficulty();
+                String category = getCategory();
+
+                piecePanel.addPieceToTable(new Piece(title, composer, difficulty, category));
+                dispose();
+            }
         });
+    }
+
+    private boolean isValidInput() {
+        if (getTitleText().contains("|") || getComposerText().contains("|")) {
+            JOptionPane.showMessageDialog(
+                    this, "Please don't use the (|) symbol in your input."
+            );
+            return false;
+        }
+        return true;
     }
 
     private String getTitleText() {return titleField.getText();}

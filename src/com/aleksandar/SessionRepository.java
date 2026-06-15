@@ -37,7 +37,7 @@ public class SessionRepository {
             ArrayList<PracticeSession> sessions = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
+                String[] parts = line.split("\\|");
                 sessions.add(new PracticeSession(
                         parts[0],
                         parts[1],
