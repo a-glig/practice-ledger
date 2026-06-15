@@ -69,10 +69,20 @@ public class PiecePanel extends JPanel {
         );
         deletePiece.addActionListener(e -> {
             int selectedRow = pieceTable.getSelectedRow();
-            Piece piece = displayedPieces.get(selectedRow);
-            pieceRepo.delete(piece);
-            refreshPieceTable();
+            if (isSelected(selectedRow)) {
+                Piece piece = displayedPieces.get(selectedRow);
+                pieceRepo.delete(piece);
+                refreshPieceTable();
+            }
         });
+    }
+
+    private boolean isSelected(int row) {
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a piece.");
+            return false;
+        }
+        return true;
     }
 
     private void loadPiecesIntoTable() {

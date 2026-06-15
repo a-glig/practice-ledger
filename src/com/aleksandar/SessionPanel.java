@@ -91,14 +91,24 @@ public class SessionPanel extends JPanel {
                 new AddSessionDialog(frame, pieceRepo, this));
         deleteSession.addActionListener(e-> {
             int selectedRow = sessionTable.getSelectedRow();
-            PracticeSession session = displayedSessions.get(selectedRow);
-            sessionRepo.delete(session);
-            refreshSessionTable(session.getDate());
+            if (isSelected(selectedRow)) {
+                PracticeSession session = displayedSessions.get(selectedRow);
+                sessionRepo.delete(session);
+                refreshSessionTable(session.getDate());
+            }
         });
         dateList.addListSelectionListener(e -> {
             String selectedDate = dateList.getSelectedValue();
             refreshSessionTable(selectedDate);
         });
+    }
+
+    private boolean isSelected(int row) {
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a session.");
+            return false;
+        }
+        return true;
     }
 
     private void loadData() {
