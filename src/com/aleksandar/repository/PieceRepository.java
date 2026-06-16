@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class PieceRepository {
 
-    private final File pieceFile = new File("pieces.txt");
+    private final File pieceFile = new File("data/pieces.txt");
 
     public void save(Piece piece) {
         try (BufferedWriter writer = new BufferedWriter(

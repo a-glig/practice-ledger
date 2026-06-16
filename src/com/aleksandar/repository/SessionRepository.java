@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class SessionRepository {
 
-    private final File sessionFile = new File("sessions.txt");
+    private final File sessionFile = new File("data/sessions.txt");
 
     public void save(PracticeSession session) {
         try (BufferedWriter writer = new BufferedWriter(
