@@ -96,8 +96,10 @@ public class SessionPanel extends JPanel {
     }
 
     private void initializeActionListeners() {
-        addSession.addActionListener(e ->
-                new AddSessionDialog(frame, pieceRepo, this));
+        addSession.addActionListener(e -> {
+            if (!pieceRepoEmpty())
+                new AddSessionDialog(frame, pieceRepo, this);
+        });
         deleteSession.addActionListener(e-> {
             int selectedRow = sessionTable.getSelectedRow();
             if (isSelected(selectedRow)) {
@@ -106,6 +108,16 @@ public class SessionPanel extends JPanel {
                 refreshAfterDeletion(session.getDate());
             }
         });
+    }
+
+    private boolean pieceRepoEmpty() {
+        if (pieceRepo.findAll().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this, "Please add at least one piece before adding a session."
+            );
+            return true;
+        }
+        return false;
     }
 
     private void initializeSelectionListener() {
