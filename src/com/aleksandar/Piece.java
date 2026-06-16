@@ -17,7 +17,7 @@ public class Piece {
     }
 
     public String toFileString() {
-        return getTitle() + "," + getComposer() + "," + getDifficulty() + "," + getCategory();
+        return getTitle() + "|" + getComposer() + "|" + getDifficulty() + "|" + getCategory();
     }
 
     public String getCategory() {return category;}

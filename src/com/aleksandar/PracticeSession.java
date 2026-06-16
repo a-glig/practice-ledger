@@ -23,7 +23,7 @@ public class PracticeSession {
     }
 
     public String toFileString() {
-        return getDate() + "," + getPieceTitle() + "," + getDuration() + "," + getNotes();
+        return getDate() + "|" + getPieceTitle() + "|" + getDuration() + "|" + getNotes();
     }
 
     public String getDate() {return date;}

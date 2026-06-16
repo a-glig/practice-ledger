@@ -61,4 +61,13 @@ public class SessionRepository {
         return sessions;
     }
 
+    public boolean containsDate(String date) {
+        for (PracticeSession session : findAll()) {
+            if (date.equals(session.getDate())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

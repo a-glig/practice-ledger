@@ -105,7 +105,6 @@ public class PiecePanel extends JPanel {
         model.setRowCount(0);
         loadPiecesIntoTable();
         displayedPieces = pieceRepo.findAll();
-        pieceTable.setModel(model);
     }
 
 }

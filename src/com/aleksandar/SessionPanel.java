@@ -37,7 +37,8 @@ public class SessionPanel extends JPanel {
 
         initializeComponents();
         initializeLayout();
-        initializeListeners();
+        initializeActionListeners();
+        initializeSelectionListener();
         loadData();
     }
 
@@ -86,7 +87,7 @@ public class SessionPanel extends JPanel {
         return panel;
     }
 
-    private void initializeListeners() {
+    private void initializeActionListeners() {
         addSession.addActionListener(e ->
                 new AddSessionDialog(frame, pieceRepo, this));
         deleteSession.addActionListener(e-> {
@@ -94,11 +95,15 @@ public class SessionPanel extends JPanel {
             if (isSelected(selectedRow)) {
                 PracticeSession session = displayedSessions.get(selectedRow);
                 sessionRepo.delete(session);
-                refreshSessionTable(session.getDate());
+                refreshAfterDeletion(session.getDate());
             }
         });
+    }
+
+    private void initializeSelectionListener() {
         dateList.addListSelectionListener(e -> {
             String selectedDate = dateList.getSelectedValue();
+            if (selectedDate == null) {return;}
             refreshSessionTable(selectedDate);
         });
     }
@@ -126,8 +131,8 @@ public class SessionPanel extends JPanel {
         }
     }
 
-    private void loadSessionsForDate(String selectedDate) {
-        for (PracticeSession session : sessionRepo.findByDate(selectedDate)) {
+    private void loadSessionsForDate(String date) {
+        for (PracticeSession session : sessionRepo.findByDate(date)) {
             tableModel.addRow(new Object[]{
                     session.getPieceTitle(), session.getDuration(), session.getNotes()
             });
@@ -145,6 +150,17 @@ public class SessionPanel extends JPanel {
         tableModel.setRowCount(0);
         loadSessionsForDate(selectedDate);
         displayedSessions = sessionRepo.findByDate(selectedDate);
-        sessionTable.setModel(tableModel);
+    }
+
+    private void refreshAfterDeletion(String selectedDate) {
+        if (sessionRepo.containsDate(selectedDate)) {
+            refreshSessionTable(selectedDate);
+        } else {
+            listModel.removeElement(selectedDate);
+            dateList.setSelectedIndex(0);
+        }
+        if (listModel.isEmpty()) {
+            tableModel.setRowCount(0);
+        }
     }
 }
