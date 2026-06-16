@@ -1,4 +1,7 @@
-package com.aleksandar;
+package com.aleksandar.ui;
+
+import com.aleksandar.model.Piece;
+import com.aleksandar.repository.PieceRepository;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

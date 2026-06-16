@@ -1,4 +1,6 @@
-package com.aleksandar;
+package com.aleksandar.repository;
+
+import com.aleksandar.model.Piece;
 
 import java.io.*;
 import java.util.ArrayList;

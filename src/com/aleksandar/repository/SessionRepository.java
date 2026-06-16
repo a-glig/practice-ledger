@@ -1,4 +1,6 @@
-package com.aleksandar;
+package com.aleksandar.repository;
+
+import com.aleksandar.model.PracticeSession;
 
 import java.io.*;
 import java.util.ArrayList;

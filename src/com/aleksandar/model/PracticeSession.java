@@ -1,6 +1,5 @@
-package com.aleksandar;
+package com.aleksandar.model;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 public class PracticeSession {

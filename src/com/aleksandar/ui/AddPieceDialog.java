@@ -1,4 +1,6 @@
-package com.aleksandar;
+package com.aleksandar.ui;
+
+import com.aleksandar.model.Piece;
 
 import javax.swing.*;
 import java.awt.*;

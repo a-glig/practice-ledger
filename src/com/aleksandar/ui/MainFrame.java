@@ -1,4 +1,7 @@
-package com.aleksandar;
+package com.aleksandar.ui;
+
+import com.aleksandar.repository.PieceRepository;
+import com.aleksandar.repository.SessionRepository;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +18,7 @@ public class MainFrame extends JFrame {
     private CardLayout cardLayout;
     private JPanel cardPanel;
 
-    MainFrame(PieceRepository pieceRepo, SessionRepository sessionRepo) {
+    public MainFrame(PieceRepository pieceRepo, SessionRepository sessionRepo) {
         super("Practice Schedule App");
         this.pieceRepo = pieceRepo;
         this.sessionRepo = sessionRepo;

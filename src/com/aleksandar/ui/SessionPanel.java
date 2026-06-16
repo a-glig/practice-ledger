@@ -1,4 +1,8 @@
-package com.aleksandar;
+package com.aleksandar.ui;
+
+import com.aleksandar.model.PracticeSession;
+import com.aleksandar.repository.PieceRepository;
+import com.aleksandar.repository.SessionRepository;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

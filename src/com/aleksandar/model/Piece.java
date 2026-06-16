@@ -1,4 +1,4 @@
-package com.aleksandar;
+package com.aleksandar.model;
 
 import java.util.Objects;
 

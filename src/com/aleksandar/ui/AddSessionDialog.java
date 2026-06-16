@@ -1,4 +1,7 @@
-package com.aleksandar;
+package com.aleksandar.ui;
+
+import com.aleksandar.model.PracticeSession;
+import com.aleksandar.repository.PieceRepository;
 
 import javax.swing.*;
 import java.awt.*;
