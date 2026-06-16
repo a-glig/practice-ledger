@@ -44,14 +44,22 @@ public class SessionPanel extends JPanel {
 
     private void initializeComponents() {
         listModel = new DefaultListModel<>();
-        tableModel = new DefaultTableModel(SESSION_COLUMNS,0);
-
+        initializeTableModel();
         initializeDateList();
         initializeSessionTable();
         initializeSplitPane();
 
         addSession = new JButton("Add Session");
         deleteSession = new JButton("Delete Session");
+    }
+
+    private void initializeTableModel() {
+        tableModel = new DefaultTableModel(SESSION_COLUMNS, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
     }
 
     private void initializeDateList() {

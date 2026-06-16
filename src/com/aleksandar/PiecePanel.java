@@ -14,7 +14,7 @@ public class PiecePanel extends JPanel {
     private JButton deletePiece;
 
     private JTable pieceTable;
-    private DefaultTableModel model;
+    private DefaultTableModel tableModel;
     private JScrollPane scrollPane;
     private ArrayList<Piece> displayedPieces;
 
@@ -36,16 +36,25 @@ public class PiecePanel extends JPanel {
     }
 
     private void initializeComponents() {
-        model = new DefaultTableModel(PIECE_COLUMNS,0);
+        initializeTableModel();
         initializePieceTable();
 
         addPiece = new JButton("Add Piece");
         deletePiece = new JButton("Delete Piece");
     }
 
+    private void initializeTableModel() {
+        tableModel = new DefaultTableModel(PIECE_COLUMNS, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+    }
+
     private void initializePieceTable() {
         displayedPieces = pieceRepo.findAll();
-        pieceTable = new JTable(model);
+        pieceTable = new JTable(tableModel);
         scrollPane = new JScrollPane(pieceTable);
         add(scrollPane);
     }
@@ -87,11 +96,8 @@ public class PiecePanel extends JPanel {
 
     private void loadPiecesIntoTable() {
         for (Piece piece: pieceRepo.findAll()) {
-            model.addRow(new Object[]{
-                    piece.getTitle(),
-                    piece.getComposer(),
-                    piece.getDifficulty(),
-                    piece.getCategory()
+            tableModel.addRow(new Object[]{piece.getTitle(), piece.getComposer(),
+                    piece.getDifficulty(), piece.getCategory()
             });
         }
     }
@@ -102,7 +108,7 @@ public class PiecePanel extends JPanel {
     }
 
     public void refreshPieceTable() {
-        model.setRowCount(0);
+        tableModel.setRowCount(0);
         loadPiecesIntoTable();
         displayedPieces = pieceRepo.findAll();
     }
