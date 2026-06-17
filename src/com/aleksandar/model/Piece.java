@@ -38,4 +38,8 @@ public class Piece {
                 && Objects.equals(title, piece.title) && Objects.equals(composer, piece.composer);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, composer, difficulty, category);
+    }
 }
