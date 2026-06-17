@@ -90,7 +90,7 @@ public class AddPieceDialog extends JDialog {
 
     private void initializeActionListener() {
         save.addActionListener(e -> {
-            if (isValidInput()) {
+            if (isValidInput() && !isTitleEmpty()) {
                 String title = getTitleText();
                 String composer = getComposerText();
                 int difficulty = getDifficulty();
@@ -110,6 +110,16 @@ public class AddPieceDialog extends JDialog {
             return false;
         }
         return true;
+    }
+
+    private boolean isTitleEmpty() {
+        if (getTitleText().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this, "Please provide a title for the piece."
+            );
+            return true;
+        }
+        return false;
     }
 
     private String getTitleText() {return titleField.getText();}
