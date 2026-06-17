@@ -4,6 +4,10 @@ A desktop application for musicians to organize practice sessions and
 keep track of pieces they are currently working on. Built with Java 
 Swing as a personal learning project.
 
+## Screenshots
+
+![Session Panel](screenshots/session_panel.png)
+
 ## Features
 
 - Add/delete musical pieces
@@ -37,6 +41,7 @@ Main.java
 
 ## Future Improvements
 
+- Changing entries 
 - Search and Filtering
 - Statistics Dashboard
 - Export functionality
