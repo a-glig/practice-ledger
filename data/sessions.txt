@@ -1,1 +1,8 @@
-2026-06-16|Sonata facile|10|Bars 1-4
+2026-06-13|Sonata facile|10|Bars 1-4
+2026-06-14|Sonata facile|20|Bars 5-12
+2026-06-15|Arabesque|30|Whole piece, 60 bpm
+2026-06-15|Sonata facile|20|Bars 13-17
+2026-06-16|The Virtuoso Pianist (collection)|10|No 1, 60 bpm
+2026-06-16|Sonata facile|40|Bars 18-22
+2026-06-16|Intermezzo A major|30|Whole piece, 50 bpm
+2026-06-17|The Virtuoso Pianist (collection)|10|No 2, 60 bpm

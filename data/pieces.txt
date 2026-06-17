@@ -1,3 +1,5 @@
 Sonata facile|Mozart|4|Repertoire
-Etude|Chopin|7|Technique
 Prelude C sharp minor|Rachmaninoff|6|Repertoire
+Intermezzo A major|Brahms|5|Repertoire
+Arabesque|Burgmüller|3|Technique
+The Virtuoso Pianist (collection)|Hanon|3|Technique

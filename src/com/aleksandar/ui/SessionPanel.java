@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public class SessionPanel extends JPanel {
 
-    private MainFrame frame;
-    private PieceRepository pieceRepo;
-    private SessionRepository sessionRepo;
+    private final MainFrame frame;
+    private final PieceRepository pieceRepo;
+    private final SessionRepository sessionRepo;
 
     private DefaultListModel<String> listModel;
     private JList<String> dateList;

@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public class PiecePanel extends JPanel {
 
-    private PieceRepository pieceRepo;
-    private MainFrame frame;
+    private final PieceRepository pieceRepo;
+    private final MainFrame frame;
 
     private JButton addPiece;
     private JButton deletePiece;
