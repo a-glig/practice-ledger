@@ -19,7 +19,7 @@ public class MainFrame extends JFrame {
     private JPanel cardPanel;
 
     public MainFrame(PieceRepository pieceRepo, SessionRepository sessionRepo) {
-        super("Practice Schedule App");
+        super("Practice Ledger");
         this.pieceRepo = pieceRepo;
         this.sessionRepo = sessionRepo;
 
