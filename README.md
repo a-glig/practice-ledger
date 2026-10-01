@@ -1,4 +1,4 @@
-# Practice Schedule App
+# Practice Ledger
 
 A desktop application for musicians to organize practice sessions and 
 keep track of pieces they are currently working on. Built with Java 
