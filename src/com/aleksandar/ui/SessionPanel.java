@@ -188,4 +188,8 @@ public class SessionPanel extends JPanel {
             tableModel.setRowCount(0);
         }
     }
+
+    public LocalDate getSelectedDate() {
+        return dateList.getSelectedValue();
+    }
 }

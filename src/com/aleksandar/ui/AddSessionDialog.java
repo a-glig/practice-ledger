@@ -77,11 +77,12 @@ public class AddSessionDialog extends JDialog {
     private void initializeActionListener() {
         save.addActionListener(e -> {
             if (isValidInput()) {
+                LocalDate selectedDate = sessionPanel.getSelectedDate();
                 String pieceTitle = getPieceTitle();
                 int duration = getDuration();
                 String notes = getNotesText();
                 sessionPanel.addSessionToTable(new PracticeSession(
-                        LocalDate.now(), pieceTitle, duration, notes
+                        selectedDate, pieceTitle, duration, notes
                 ));
                 dispose();
             }
