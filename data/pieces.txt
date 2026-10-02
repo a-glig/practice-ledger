@@ -3,3 +3,4 @@ Prelude C sharp minor|Rachmaninoff|6|Repertoire
 Intermezzo A major|Brahms|5|Repertoire
 Arabesque|Burgmüller|3|Technique
 The Virtuoso Pianist (collection)|Hanon|3|Technique
+Träumerei|Schumann|4|Repertoire

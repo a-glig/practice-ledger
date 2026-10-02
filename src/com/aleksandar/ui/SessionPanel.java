@@ -7,6 +7,7 @@ import com.aleksandar.repository.SessionRepository;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class SessionPanel extends JPanel {
@@ -15,8 +16,8 @@ public class SessionPanel extends JPanel {
     private final PieceRepository pieceRepo;
     private final SessionRepository sessionRepo;
 
-    private DefaultListModel<String> listModel;
-    private JList<String> dateList;
+    private DefaultListModel<LocalDate> listModel;
+    private JList<LocalDate> dateList;
     private JScrollPane scrollPaneList;
 
     private DefaultTableModel tableModel;
@@ -126,7 +127,7 @@ public class SessionPanel extends JPanel {
 
     private void initializeSelectionListener() {
         dateList.addListSelectionListener(e -> {
-            String selectedDate = dateList.getSelectedValue();
+            LocalDate selectedDate = dateList.getSelectedValue();
             if (selectedDate == null) {return;}
             refreshSessionTable(selectedDate);
         });
@@ -155,7 +156,7 @@ public class SessionPanel extends JPanel {
         }
     }
 
-    private void loadSessionsForDate(String date) {
+    private void loadSessionsForDate(LocalDate date) {
         for (PracticeSession session : sessionRepo.findByDate(date)) {
             tableModel.addRow(new Object[]{
                     session.getPieceTitle(), session.getDuration(), session.getNotes()
@@ -170,13 +171,13 @@ public class SessionPanel extends JPanel {
             listModel.addElement(session.getDate());
     }
 
-    private void refreshSessionTable(String selectedDate) {
+    private void refreshSessionTable(LocalDate selectedDate) {
         tableModel.setRowCount(0);
         loadSessionsForDate(selectedDate);
         displayedSessions = sessionRepo.findByDate(selectedDate);
     }
 
-    private void refreshAfterDeletion(String selectedDate) {
+    private void refreshAfterDeletion(LocalDate selectedDate) {
         if (sessionRepo.containsDate(selectedDate)) {
             refreshSessionTable(selectedDate);
         } else {

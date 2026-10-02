@@ -1,16 +1,17 @@
 package com.aleksandar.model;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class PracticeSession {
 
-    private String date;
+    private LocalDate date;
     private String pieceTitle;
     private int duration;
     private String notes;
 
     public PracticeSession(
-            String date,
+            LocalDate date,
             String pieceTitle,
             int duration,
             String notes
@@ -22,10 +23,12 @@ public class PracticeSession {
     }
 
     public String toFileString() {
-        return getDate() + "|" + getPieceTitle() + "|" + getDuration() + "|" + getNotes();
+        return getDateString() + "|" + getPieceTitle() + "|" + getDuration() + "|" + getNotes();
     }
 
-    public String getDate() {return date;}
+    public LocalDate getDate() {return date;}
+
+    public String getDateString() {return date.toString();}
 
     public String getPieceTitle() {return pieceTitle;}
 

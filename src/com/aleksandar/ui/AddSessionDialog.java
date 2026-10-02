@@ -81,7 +81,7 @@ public class AddSessionDialog extends JDialog {
                 int duration = getDuration();
                 String notes = getNotesText();
                 sessionPanel.addSessionToTable(new PracticeSession(
-                        LocalDate.now().toString(), pieceTitle, duration, notes
+                        LocalDate.now(), pieceTitle, duration, notes
                 ));
                 dispose();
             }

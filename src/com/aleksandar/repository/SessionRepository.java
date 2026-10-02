@@ -3,6 +3,7 @@ package com.aleksandar.repository;
 import com.aleksandar.model.PracticeSession;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class SessionRepository {
@@ -41,7 +42,7 @@ public class SessionRepository {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\\|",-1);
                 sessions.add(new PracticeSession(
-                        parts[0],
+                        LocalDate.parse(parts[0]),
                         parts[1],
                         Integer.parseInt(parts[2]),
                         parts[3])
@@ -53,7 +54,7 @@ public class SessionRepository {
         }
     }
 
-    public ArrayList<PracticeSession> findByDate(String date) {
+    public ArrayList<PracticeSession> findByDate(LocalDate date) {
         ArrayList<PracticeSession> sessions = new ArrayList<>();
         for (PracticeSession session: findAll()) {
             if (date.equals(session.getDate())) {
@@ -63,7 +64,7 @@ public class SessionRepository {
         return sessions;
     }
 
-    public boolean containsDate(String date) {
+    public boolean containsDate(LocalDate date) {
         for (PracticeSession session : findAll()) {
             if (date.equals(session.getDate())) {
                 return true;
