@@ -84,18 +84,16 @@ public class DashboardPanel extends JPanel {
 
     private void loadLabelsThisMonth() {
         DayOfWeek firstDay = thisMonth.atDay(1).getDayOfWeek();
-        int current_row = 0;
-        int current_col = Arrays.asList(WEEKDAYS).indexOf(firstDay.toString());
-        dayLabels[current_row][current_col].setText("1");
+        int currentRow = 0;
+        int currentCol = Arrays.asList(WEEKDAYS).indexOf(firstDay.toString());
 
         for (int day = 1; day <= thisMonth.lengthOfMonth(); day++) {
-            if (current_col < WEEKDAYS.length - 1) {
-                dayLabels[current_row][current_col].setText(String.valueOf(day));
-                current_col += 1;
+            dayLabels[currentRow][currentCol].setText(String.valueOf(day));
+            if (currentCol == WEEKDAYS.length - 1) {
+                currentRow++;
+                currentCol = 0;
             } else {
-                dayLabels[current_row][current_col].setText(String.valueOf(day));
-                current_row += 1;
-                current_col = 0;
+                currentCol++;
             }
         }
     }
