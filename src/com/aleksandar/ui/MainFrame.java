@@ -12,6 +12,7 @@ public class MainFrame extends JFrame {
     private PieceRepository pieceRepo;
     private SessionRepository sessionRepo;
 
+    private JButton dashboard;
     private JButton sessions;
     private JButton pieces;
 
@@ -30,6 +31,7 @@ public class MainFrame extends JFrame {
     }
 
     private void initializeComponents() {
+        dashboard = new JButton("Dashboard");
         sessions = new JButton("Sessions");
         pieces = new JButton("Pieces");
 
@@ -48,18 +50,23 @@ public class MainFrame extends JFrame {
 
     private JPanel createNavigationPanel() {
         JPanel panel = new JPanel();
+        panel.add(dashboard);
         panel.add(sessions);
         panel.add(pieces);
         return panel;
     }
 
     private JPanel createCardPanel() {
+        cardPanel.add(new DashboardPanel(this), "dashboard");
         cardPanel.add(new SessionPanel(this, sessionRepo, pieceRepo), "sessions");
         cardPanel.add(new PiecePanel(this, pieceRepo), "pieces");
         return cardPanel;
     }
 
     private void initializeActionListeners() {
+        dashboard.addActionListener(e ->
+                cardLayout.show(cardPanel, "dashboard")
+        );
         sessions.addActionListener(e ->
                 cardLayout.show(cardPanel, "sessions")
         );
