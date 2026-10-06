@@ -14,32 +14,59 @@ public class DashboardPanel extends JPanel {
 
     private final MainFrame frame;
     private final int MAX_CALENDAR_ROWS = 6;
-    private final YearMonth thisMonth = YearMonth.from(LocalDate.now());
+    private YearMonth displayedMonth = YearMonth.from(LocalDate.now());
+
+    private JLabel[][] dayLabels = new JLabel[MAX_CALENDAR_ROWS][WEEKDAYS.length];
+    private JPanel[][] dayPanels = new JPanel[MAX_CALENDAR_ROWS][WEEKDAYS.length];
 
     private static final String[] WEEKDAYS = {"MONDAY", "TUESDAY",
         "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"
     };
 
-    private JLabel[][] dayLabels = new JLabel[MAX_CALENDAR_ROWS][WEEKDAYS.length];
-    private JPanel[][] dayPanels = new JPanel[MAX_CALENDAR_ROWS][WEEKDAYS.length];
+    private static final String[] MONTHS = {"JANUARY", "FEBRUARY",
+        "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER",
+        "OCTOBER", "NOVEMBER", "DECEMBER"
+    };
+
+    private JButton previousMonth;
+    private JButton nextMonth;
 
     DashboardPanel(MainFrame frame) {
         this.frame = frame;
-        initializeLayout();
-    }
 
-    private void initializeLayout() {
+        nextMonth = new JButton(">");
+        previousMonth = new JButton("<");
+
         setLayout(new BorderLayout());
-        add(initializeCalendar(),BorderLayout.CENTER);
+        add(initializeCalendar(),BorderLayout.NORTH);
     }
 
     private JPanel initializeCalendar() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        panel.add(addWeekdayHeaders(), BorderLayout.NORTH);
-        panel.add(initializeCalendarGrid(), BorderLayout.CENTER);
+
+        panel.add(initializeCalendarSettings(), BorderLayout.NORTH);
+        panel.add(addWeekdayHeaders(), BorderLayout.CENTER);
+        panel.add(initializeCalendarGrid(), BorderLayout.SOUTH);
         loadLabelsThisMonth();
+        
         return panel;
+    }
+
+    private JPanel initializeCalendarSettings() {
+        JPanel panel = new JPanel();
+        JLabel monthLabel = new JLabel(formatMonth(displayedMonth));
+
+        panel.add(previousMonth);
+        panel.add(monthLabel);
+        panel.add(nextMonth);
+
+        return panel;
+    }
+
+    private String formatMonth (YearMonth month) {
+        int monthNumber = month.getMonthValue();
+        return MONTHS[monthNumber-1] + " " + month.getYear();
     }
 
     private JPanel addWeekdayHeaders() {
@@ -86,11 +113,11 @@ public class DashboardPanel extends JPanel {
     }
 
     private void loadLabelsThisMonth() {
-        DayOfWeek firstDay = thisMonth.atDay(1).getDayOfWeek();
+        DayOfWeek firstDay = displayedMonth.atDay(1).getDayOfWeek();
         int currentRow = 0;
         int currentCol = Arrays.asList(WEEKDAYS).indexOf(firstDay.toString());
 
-        for (int day = 1; day <= thisMonth.lengthOfMonth(); day++) {
+        for (int day = 1; day <= displayedMonth.lengthOfMonth(); day++) {
             dayLabels[currentRow][currentCol].setText(String.valueOf(day));
             if (currentCol == WEEKDAYS.length - 1) {
                 currentRow++;
