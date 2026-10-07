@@ -14,8 +14,11 @@ import java.util.Arrays;
 public class DashboardPanel extends JPanel {
 
     private final MainFrame frame;
+
     private final int MAX_CALENDAR_ROWS = 6;
+    private int lastFilledRow;
     private YearMonth shownMonth = YearMonth.from(LocalDate.now());
+    private JLabel monthLabel;
 
     private JLabel[][] dayLabels = new JLabel[MAX_CALENDAR_ROWS][WEEKDAYS.length];
     private JPanel[][] dayPanels = new JPanel[MAX_CALENDAR_ROWS][WEEKDAYS.length];
@@ -45,14 +48,16 @@ public class DashboardPanel extends JPanel {
         panel.add(initializeCalendarSettings(), BorderLayout.NORTH);
         panel.add(addWeekdayHeaders(), BorderLayout.CENTER);
         panel.add(initializeCalendarGrid(), BorderLayout.SOUTH);
+
         loadDayLabels(shownMonth);
-        
+        hideEmptyRows(lastFilledRow);
+
         return panel;
     }
 
     private JPanel initializeCalendarSettings() {
         JPanel panel = new JPanel();
-        JLabel monthLabel = new JLabel(formatMonth(shownMonth));
+        monthLabel = new JLabel(formatMonth(shownMonth));
 
         panel.add(previousMonth);
         panel.add(monthLabel);
@@ -122,11 +127,11 @@ public class DashboardPanel extends JPanel {
                 currentCol++;
             }
         }
-        hideEmptyRows(currentRow);
+        lastFilledRow = currentRow;
     }
 
-    private void hideEmptyRows(int lastRow) {
-        for (int row = lastRow; row < MAX_CALENDAR_ROWS; row++) {
+    private void hideEmptyRows(int lastFilledRow) {
+        for (int row = lastFilledRow; row < MAX_CALENDAR_ROWS; row++) {
             if (!dayLabels[row][0].getText().isEmpty())
                 continue;
             for (int col = 0; col < WEEKDAYS.length; col++) {
@@ -138,9 +143,19 @@ public class DashboardPanel extends JPanel {
     private void initializeActionListeners() {
         previousMonth.addActionListener(e -> {
             shownMonth = shownMonth.minus(Period.ofMonths(1));
-            resetCalendarGrid();
-            loadDayLabels(shownMonth);
+            updateCalendar(shownMonth);
         });
+        nextMonth.addActionListener(e -> {
+            shownMonth = shownMonth.plus(Period.ofMonths(1));
+            updateCalendar(shownMonth);
+        });
+    }
+
+    private void updateCalendar(YearMonth month) {
+        resetCalendarGrid();
+        loadDayLabels(month);
+        hideEmptyRows(lastFilledRow);
+        monthLabel.setText(formatMonth(month));
     }
 
     private void resetCalendarGrid() {
