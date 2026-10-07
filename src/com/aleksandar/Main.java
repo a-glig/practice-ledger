@@ -13,16 +13,16 @@ public class Main {
     public static void main(String[] args) {
         PieceRepository pieceRepo = new PieceRepository();
         SessionRepository sessionRepo = new SessionRepository();
-        StatisticsService service = new StatisticsService(sessionRepo);
+        StatisticsService statistics = new StatisticsService(sessionRepo);
         SwingUtilities.invokeLater(() ->
-                new MainFrame(pieceRepo, sessionRepo)
+                new MainFrame(pieceRepo, sessionRepo, statistics)
         );
 
         // Test statistics service
         var testDate = LocalDate.parse("2026-06-15");
-        var practiceTimeDay = service.getPracticeDurationForDate(testDate);
-        var practiceTimeWeek = service.getPracticeDurationForWeek(testDate);
-        var practiceDaysMonth = service.getPracticeDaysForMonth(testDate);
+        var practiceTimeDay = statistics.getPracticeDurationForDate(testDate);
+        var practiceTimeWeek = statistics.getPracticeDurationForWeek(testDate);
+        var practiceDaysMonth = statistics.getPracticeDaysForMonth(testDate);
         System.out.println(practiceTimeDay);
         System.out.println(practiceTimeWeek);
         System.out.println(practiceDaysMonth);

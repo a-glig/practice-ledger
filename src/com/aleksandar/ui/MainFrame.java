@@ -2,6 +2,7 @@ package com.aleksandar.ui;
 
 import com.aleksandar.repository.PieceRepository;
 import com.aleksandar.repository.SessionRepository;
+import com.aleksandar.services.StatisticsService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +12,7 @@ public class MainFrame extends JFrame {
 
     private PieceRepository pieceRepo;
     private SessionRepository sessionRepo;
+    private StatisticsService statistics;
 
     private JButton dashboard;
     private JButton sessions;
@@ -19,10 +21,13 @@ public class MainFrame extends JFrame {
     private CardLayout cardLayout;
     private JPanel cardPanel;
 
-    public MainFrame(PieceRepository pieceRepo, SessionRepository sessionRepo) {
+    public MainFrame(PieceRepository pieceRepo,
+                     SessionRepository sessionRepo,
+                     StatisticsService statistics) {
         super("Practice Ledger");
         this.pieceRepo = pieceRepo;
         this.sessionRepo = sessionRepo;
+        this.statistics = statistics;
 
         initializeComponents();
         initializeLayout();
@@ -57,7 +62,7 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createCardPanel() {
-        cardPanel.add(new DashboardPanel(this), "dashboard");
+        cardPanel.add(new DashboardPanel(this, sessionRepo, statistics), "dashboard");
         cardPanel.add(new SessionPanel(this, sessionRepo, pieceRepo), "sessions");
         cardPanel.add(new PiecePanel(this, pieceRepo), "pieces");
         return cardPanel;

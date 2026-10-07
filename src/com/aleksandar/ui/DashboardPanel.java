@@ -1,5 +1,10 @@
 package com.aleksandar.ui;
 
+import com.aleksandar.model.Piece;
+import com.aleksandar.model.PracticeSession;
+import com.aleksandar.repository.SessionRepository;
+import com.aleksandar.services.StatisticsService;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -14,6 +19,8 @@ import java.util.Arrays;
 public class DashboardPanel extends JPanel {
 
     private final MainFrame frame;
+    private final SessionRepository sessionRepo;
+    private StatisticsService statistics;
 
     private final int MAX_CALENDAR_ROWS = 6;
     private int lastFilledRow;
@@ -30,14 +37,32 @@ public class DashboardPanel extends JPanel {
     private JButton previousMonth;
     private JButton nextMonth;
 
-    DashboardPanel(MainFrame frame) {
+    private JSplitPane splitPane;
+
+    private DefaultListModel<String> listModel;
+    private JList<String> pieceList;
+    private JScrollPane scrollPaneList;
+
+    private JPanel statisticsPanel;
+
+    DashboardPanel(MainFrame frame,
+                   SessionRepository sessionRepo,
+                   StatisticsService statistics
+                   ) {
         this.frame = frame;
+        this.sessionRepo = sessionRepo;
+        this.statistics = statistics;
 
         nextMonth = new JButton(">");
         previousMonth = new JButton("<");
 
         setLayout(new BorderLayout());
         add(initializeCalendar(),BorderLayout.NORTH);
+        initializePieceList();
+        initializeStatisticsPanel();
+        initializeSplitPane();
+        add(splitPane, BorderLayout.CENTER);
+        loadPiecesIntoList();
         initializeActionListeners();
     }
 
@@ -167,6 +192,53 @@ public class DashboardPanel extends JPanel {
                 );
             }
         }
+    }
+
+    private void initializeSplitPane() {
+        splitPane = new JSplitPane(
+                JSplitPane.HORIZONTAL_SPLIT, scrollPaneList, statisticsPanel
+        );
+        splitPane.setResizeWeight(0.5);
+        splitPane.setEnabled(false);
+    }
+
+    private void initializePieceList() {
+        listModel = new DefaultListModel<>();
+        pieceList = new JList<>(listModel);
+        scrollPaneList = new JScrollPane(pieceList);
+    }
+
+    private void loadPiecesIntoList() {
+        for (PracticeSession session : sessionRepo.findAll()) {
+            if (session.getDate().equals(LocalDate.now()))
+                listModel.addElement(session.getPieceTitle());
+        }
+    }
+
+    private void initializeStatisticsPanel() {
+        statisticsPanel = new JPanel();
+        statisticsPanel.setLayout(new BoxLayout(statisticsPanel, BoxLayout.Y_AXIS));
+
+        JLabel title = new JLabel("Statistics");
+        title.setFont(new Font("SansSerif", Font.BOLD, 20));
+
+        statisticsPanel.add(title);
+        statisticsPanel.add(Box.createVerticalStrut(15));
+        addStatistics(statisticsPanel, LocalDate.now());
+    }
+
+    private void addStatistics(JPanel panel, LocalDate day) {
+        panel.add(new JLabel(
+                "Practice time (day): " + statistics.getPracticeDurationForDate(day))
+        );
+        statisticsPanel.add(Box.createVerticalStrut(10));
+        panel.add(new JLabel(
+                "Practice time (week): " + statistics.getPracticeDurationForWeek(day))
+        );
+        statisticsPanel.add(Box.createVerticalStrut(10));
+        panel.add(new JLabel(
+                "Days practiced this month: " + statistics.daysPracticedInMonth(day))
+        );
     }
 
 }

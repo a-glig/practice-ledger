@@ -3,6 +3,7 @@ package com.aleksandar.services;
 import com.aleksandar.model.PracticeSession;
 import com.aleksandar.repository.SessionRepository;
 
+import javax.swing.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -47,5 +48,9 @@ public class StatisticsService {
             }
         }
         return practiceDays;
+    }
+
+    public int daysPracticedInMonth(LocalDate date) {
+        return getPracticeDaysForMonth(date).toArray().length;
     }
 }
