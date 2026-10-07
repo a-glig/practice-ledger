@@ -5,6 +5,7 @@ import java.awt.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.YearMonth;
 
 import java.util.Arrays;
@@ -14,18 +15,13 @@ public class DashboardPanel extends JPanel {
 
     private final MainFrame frame;
     private final int MAX_CALENDAR_ROWS = 6;
-    private YearMonth displayedMonth = YearMonth.from(LocalDate.now());
+    private YearMonth shownMonth = YearMonth.from(LocalDate.now());
 
     private JLabel[][] dayLabels = new JLabel[MAX_CALENDAR_ROWS][WEEKDAYS.length];
     private JPanel[][] dayPanels = new JPanel[MAX_CALENDAR_ROWS][WEEKDAYS.length];
 
     private static final String[] WEEKDAYS = {"MONDAY", "TUESDAY",
         "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"
-    };
-
-    private static final String[] MONTHS = {"JANUARY", "FEBRUARY",
-        "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER",
-        "OCTOBER", "NOVEMBER", "DECEMBER"
     };
 
     private JButton previousMonth;
@@ -39,6 +35,7 @@ public class DashboardPanel extends JPanel {
 
         setLayout(new BorderLayout());
         add(initializeCalendar(),BorderLayout.NORTH);
+        initializeActionListeners();
     }
 
     private JPanel initializeCalendar() {
@@ -48,14 +45,14 @@ public class DashboardPanel extends JPanel {
         panel.add(initializeCalendarSettings(), BorderLayout.NORTH);
         panel.add(addWeekdayHeaders(), BorderLayout.CENTER);
         panel.add(initializeCalendarGrid(), BorderLayout.SOUTH);
-        loadLabelsThisMonth();
+        loadDayLabels(shownMonth);
         
         return panel;
     }
 
     private JPanel initializeCalendarSettings() {
         JPanel panel = new JPanel();
-        JLabel monthLabel = new JLabel(formatMonth(displayedMonth));
+        JLabel monthLabel = new JLabel(formatMonth(shownMonth));
 
         panel.add(previousMonth);
         panel.add(monthLabel);
@@ -65,8 +62,7 @@ public class DashboardPanel extends JPanel {
     }
 
     private String formatMonth (YearMonth month) {
-        int monthNumber = month.getMonthValue();
-        return MONTHS[monthNumber-1] + " " + month.getYear();
+        return month.getMonth() + " " + month.getYear();
     }
 
     private JPanel addWeekdayHeaders() {
@@ -112,12 +108,12 @@ public class DashboardPanel extends JPanel {
         return dayPanel;
     }
 
-    private void loadLabelsThisMonth() {
-        DayOfWeek firstDay = displayedMonth.atDay(1).getDayOfWeek();
+    private void loadDayLabels(YearMonth month) {
+        DayOfWeek firstDay = month.atDay(1).getDayOfWeek();
         int currentRow = 0;
         int currentCol = Arrays.asList(WEEKDAYS).indexOf(firstDay.toString());
 
-        for (int day = 1; day <= displayedMonth.lengthOfMonth(); day++) {
+        for (int day = 1; day <= month.lengthOfMonth(); day++) {
             dayLabels[currentRow][currentCol].setText(String.valueOf(day));
             if (currentCol == WEEKDAYS.length - 1) {
                 currentRow++;
@@ -138,4 +134,24 @@ public class DashboardPanel extends JPanel {
             }
         }
     }
+
+    private void initializeActionListeners() {
+        previousMonth.addActionListener(e -> {
+            shownMonth = shownMonth.minus(Period.ofMonths(1));
+            resetCalendarGrid();
+            loadDayLabels(shownMonth);
+        });
+    }
+
+    private void resetCalendarGrid() {
+        for (int row = 0; row < MAX_CALENDAR_ROWS; row++) {
+            for (int col = 0; col < WEEKDAYS.length; col++) {
+                dayLabels[row][col].setText("");
+                dayPanels[row][col].setBorder(
+                        BorderFactory.createLineBorder(Color.black)
+                );
+            }
+        }
+    }
+
 }
