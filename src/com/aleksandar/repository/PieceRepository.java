@@ -62,4 +62,13 @@ public class PieceRepository {
             throw new RuntimeException(e);
         }
     }
+
+    public ArrayList<Piece> getRepertoire() {
+        ArrayList<Piece> repertoire = new ArrayList<>();
+        for (Piece piece : findAll()) {
+            if (piece.getCategory().equals("Repertoire"))
+                repertoire.add(piece);
+        }
+        return repertoire;
+    }
 }

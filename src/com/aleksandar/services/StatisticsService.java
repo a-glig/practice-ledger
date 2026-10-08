@@ -1,18 +1,23 @@
 package com.aleksandar.services;
 
+import com.aleksandar.model.Piece;
 import com.aleksandar.model.PracticeSession;
+import com.aleksandar.repository.PieceRepository;
 import com.aleksandar.repository.SessionRepository;
 
 import javax.swing.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class StatisticsService {
+    private final PieceRepository pieceRepo;
     private final SessionRepository sessionRepo;
 
-    public StatisticsService(SessionRepository sessionRepo) {
+    public StatisticsService(PieceRepository pieceRepo, SessionRepository sessionRepo) {
+        this.pieceRepo = pieceRepo;
         this.sessionRepo = sessionRepo;
     }
 
@@ -53,4 +58,34 @@ public class StatisticsService {
     public int daysPracticedInMonth(LocalDate date) {
         return getPracticeDaysForMonth(date).toArray().length;
     }
+
+    public ArrayList<Piece> getNeglectedRepertoire(int numberOfPieces) {
+        ArrayList<Piece> repertoire = pieceRepo.getRepertoire();
+        ArrayList<Piece> neglected = new ArrayList<>();
+
+        sortByLastPractice(repertoire);
+
+        numberOfPieces = Math.min(numberOfPieces, repertoire.size());
+        for (int i = 0; i < numberOfPieces; i++) {
+            neglected.add(repertoire.get(i));
+        }
+        return neglected;
+    }
+
+    public void sortByLastPractice(ArrayList<Piece> repertoire) {
+        repertoire.sort((piece1, piece2) -> {
+            LocalDate date1 = sessionRepo.findLatestDate(piece1.getTitle());
+            LocalDate date2 = sessionRepo.findLatestDate(piece2.getTitle());
+
+            if (date1 == null && date2 == null)
+                return 0;
+            if (date1 == null)
+                return -1;
+            if (date2 == null)
+                return 1;
+
+            return date1.compareTo(date2);
+        });
+    }
+
 }

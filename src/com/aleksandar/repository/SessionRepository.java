@@ -1,5 +1,6 @@
 package com.aleksandar.repository;
 
+import com.aleksandar.model.Piece;
 import com.aleksandar.model.PracticeSession;
 
 import java.io.*;
@@ -73,4 +74,14 @@ public class SessionRepository {
         return false;
     }
 
+    public LocalDate findLatestDate(String pieceTitle) {
+        LocalDate latestDate = null;
+        for (PracticeSession session: findAll()) {
+            if (session.getPieceTitle().equals(pieceTitle)) {
+                if (latestDate == null || session.getDate().isAfter(latestDate))
+                    latestDate = session.getDate();
+            }
+        }
+        return latestDate;
+    }
 }

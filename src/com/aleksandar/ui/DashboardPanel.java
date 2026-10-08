@@ -1,5 +1,6 @@
 package com.aleksandar.ui;
 
+import com.aleksandar.model.Piece;
 import com.aleksandar.model.PracticeSession;
 import com.aleksandar.repository.SessionRepository;
 import com.aleksandar.services.StatisticsService;
@@ -8,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class DashboardPanel extends JPanel {
 
@@ -73,12 +75,23 @@ public class DashboardPanel extends JPanel {
         statisticsPanel = new JPanel();
         statisticsPanel.setLayout(new BoxLayout(statisticsPanel, BoxLayout.Y_AXIS));
 
-        JLabel title = new JLabel("Statistics");
+        statisticsPanel.add(practiceSummary(LocalDate.now()));
+        statisticsPanel.add(neglectedRepertoire());
+
+    }
+
+    private JPanel practiceSummary(LocalDate date) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        JLabel title = new JLabel("Practice Summary");
         title.setFont(new Font("SansSerif", Font.BOLD, 20));
 
-        statisticsPanel.add(title);
-        statisticsPanel.add(Box.createVerticalStrut(15));
-        addStatistics(statisticsPanel, LocalDate.now());
+        panel.add(title);
+        panel.add(Box.createVerticalStrut(15));
+        addStatistics(panel, date);
+
+        return panel;
     }
 
     private void addStatistics(JPanel panel, LocalDate day) {
@@ -93,6 +106,25 @@ public class DashboardPanel extends JPanel {
         panel.add(new JLabel(
                 "Days practiced this month: " + statistics.daysPracticedInMonth(day))
         );
+    }
+
+    private JPanel neglectedRepertoire() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        JLabel title = new JLabel("Repertoire to revisit");
+        title.setFont(new Font("SansSerif", Font.BOLD, 20));
+
+        panel.add(title);
+        panel.add(Box.createVerticalStrut(15));
+
+        ArrayList<Piece> neglectedRepertoire = statistics.getNeglectedRepertoire(5);
+        for (Piece piece: neglectedRepertoire) {
+            panel.add(new JLabel(piece.getTitle()));
+            statisticsPanel.add(Box.createVerticalStrut(10));
+        }
+
+        return panel;
     }
 
 }
