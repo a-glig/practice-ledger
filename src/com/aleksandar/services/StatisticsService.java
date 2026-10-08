@@ -73,19 +73,24 @@ public class StatisticsService {
     }
 
     public void sortByLastPractice(ArrayList<Piece> repertoire) {
+        repertoire.removeIf(piece ->
+                sessionRepo.findLatestDate(piece.getTitle()) == null
+        );
+
         repertoire.sort((piece1, piece2) -> {
             LocalDate date1 = sessionRepo.findLatestDate(piece1.getTitle());
             LocalDate date2 = sessionRepo.findLatestDate(piece2.getTitle());
 
-            if (date1 == null && date2 == null)
-                return 0;
-            if (date1 == null)
-                return -1;
-            if (date2 == null)
-                return 1;
-
             return date1.compareTo(date2);
         });
+    }
+
+    public long getDaysNotPracticed(Piece piece, LocalDate date) {
+        LocalDate lastPracticed = sessionRepo.findLatestDate(piece.getTitle());
+        if (lastPracticed != null)
+            return ChronoUnit.DAYS.between(lastPracticed, date);
+        else
+            return 0;
     }
 
 }

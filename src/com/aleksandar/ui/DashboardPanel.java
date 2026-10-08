@@ -76,6 +76,7 @@ public class DashboardPanel extends JPanel {
         statisticsPanel.setLayout(new BoxLayout(statisticsPanel, BoxLayout.Y_AXIS));
 
         statisticsPanel.add(practiceSummary(LocalDate.now()));
+        statisticsPanel.add(Box.createVerticalStrut(20));
         statisticsPanel.add(neglectedRepertoire());
 
     }
@@ -85,7 +86,7 @@ public class DashboardPanel extends JPanel {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JLabel title = new JLabel("Practice Summary");
-        title.setFont(new Font("SansSerif", Font.BOLD, 20));
+        title.setFont(new Font("SansSerif", Font.BOLD, 18));
 
         panel.add(title);
         panel.add(Box.createVerticalStrut(15));
@@ -98,11 +99,9 @@ public class DashboardPanel extends JPanel {
         panel.add(new JLabel(
                 "Practice time (day): " + statistics.getPracticeDurationForDate(day))
         );
-        statisticsPanel.add(Box.createVerticalStrut(10));
         panel.add(new JLabel(
                 "Practice time (week): " + statistics.getPracticeDurationForWeek(day))
         );
-        statisticsPanel.add(Box.createVerticalStrut(10));
         panel.add(new JLabel(
                 "Days practiced this month: " + statistics.daysPracticedInMonth(day))
         );
@@ -113,18 +112,27 @@ public class DashboardPanel extends JPanel {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JLabel title = new JLabel("Repertoire to revisit");
-        title.setFont(new Font("SansSerif", Font.BOLD, 20));
+        title.setFont(new Font("SansSerif", Font.BOLD, 18));
 
         panel.add(title);
         panel.add(Box.createVerticalStrut(15));
 
-        ArrayList<Piece> neglectedRepertoire = statistics.getNeglectedRepertoire(5);
-        for (Piece piece: neglectedRepertoire) {
-            panel.add(new JLabel(piece.getTitle()));
-            statisticsPanel.add(Box.createVerticalStrut(10));
-        }
+        printRepertoire(panel);
 
         return panel;
     }
 
+    private void printRepertoire(JPanel panel) {
+        ArrayList<Piece> neglectedRepertoire = statistics.getNeglectedRepertoire(3);
+
+        for (Piece piece: neglectedRepertoire) {
+            long daysNotPracticed = statistics.getDaysNotPracticed(piece, LocalDate.now());
+            panel.add(new JLabel(piece.getTitle() + " (" + piece.getComposer() + ")"));
+            if (daysNotPracticed == 1)
+                panel.add(new JLabel("Not practiced since " + daysNotPracticed + " day."));
+            else
+                panel.add(new JLabel("Not practiced since " + daysNotPracticed + " days."));
+            panel.add(Box.createVerticalStrut(15));
+        }
+    }
 }
