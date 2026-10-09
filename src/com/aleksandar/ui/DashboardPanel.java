@@ -23,6 +23,7 @@ public class DashboardPanel extends JPanel {
     private final MainFrame frame;
     private final SessionRepository sessionRepo;
     private StatisticsService statistics;
+    private Calendar calendar;
 
     private JSplitPane splitPane;
 
@@ -36,12 +37,14 @@ public class DashboardPanel extends JPanel {
         this.frame = frame;
         this.sessionRepo = sessionRepo;
         this.statistics = statistics;
+        this.calendar = calendar;
 
         initializeComponents();
         initializeLayout();
     }
 
     private void initializeComponents() {
+        calendar = new Calendar();
         initializeChartPanel();
         initializeStatisticsPanel();
         initializeSplitPane();
@@ -49,7 +52,7 @@ public class DashboardPanel extends JPanel {
 
     private void initializeLayout() {
         setLayout(new BorderLayout());
-        add(new Calendar(),BorderLayout.NORTH);
+        add(calendar,BorderLayout.NORTH);
         add(splitPane, BorderLayout.CENTER);
     }
 

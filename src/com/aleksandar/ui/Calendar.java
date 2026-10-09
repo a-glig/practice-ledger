@@ -12,9 +12,11 @@ import java.util.Arrays;
 
 public class Calendar extends JPanel {
 
+    private YearMonth shownMonth = YearMonth.from(LocalDate.now());
+    private LocalDate selectedDate = LocalDate.now();
+
     private final int MAX_CALENDAR_ROWS = 6;
     private int lastFilledRow;
-    private YearMonth shownMonth = YearMonth.from(LocalDate.now());
     private JLabel monthLabel;
 
     private static final String[] WEEKDAYS = {"MONDAY", "TUESDAY",
@@ -83,9 +85,9 @@ public class Calendar extends JPanel {
     }
 
     private JButton initializeDayCell(int row, int col) {
-        JButton dayPanel = new JButton("");
-        dayButtons[row][col] = dayPanel;
-        return dayPanel;
+        JButton dayButton = new JButton("");
+        dayButtons[row][col] = dayButton;
+        return dayButton;
     }
 
     private void loadDayLabels(YearMonth month) {
@@ -124,6 +126,17 @@ public class Calendar extends JPanel {
             shownMonth = shownMonth.plus(Period.ofMonths(1));
             updateCalendar(shownMonth);
         });
+        for (JButton[] row : dayButtons) {
+            for (JButton button : row) {
+                button.addActionListener(e -> {
+                    JButton clickedButton = (JButton) e.getSource();
+                    if (!clickedButton.getText().isEmpty()) {
+                        int day = Integer.parseInt(clickedButton.getText());
+                        selectedDate = shownMonth.atDay(day);
+                    }
+                });
+            }
+        }
     }
 
     private void updateCalendar(YearMonth month) {
@@ -142,5 +155,9 @@ public class Calendar extends JPanel {
                 );
             }
         }
+    }
+
+    public LocalDate getSelectedDate() {
+        return selectedDate;
     }
 }
