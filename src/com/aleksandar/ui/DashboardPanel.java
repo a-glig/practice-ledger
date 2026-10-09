@@ -1,9 +1,12 @@
 package com.aleksandar.ui;
 
 import com.aleksandar.model.Piece;
-import com.aleksandar.model.PracticeSession;
 import com.aleksandar.repository.SessionRepository;
 import com.aleksandar.services.StatisticsService;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,10 +22,7 @@ public class DashboardPanel extends JPanel {
 
     private JSplitPane splitPane;
 
-    private DefaultListModel<String> listModel;
-    private JList<String> pieceList;
-    private JScrollPane scrollPaneList;
-
+    private ChartPanel chartPanel;
     private JPanel statisticsPanel;
 
     DashboardPanel(MainFrame frame,
@@ -35,11 +35,10 @@ public class DashboardPanel extends JPanel {
 
         initializeComponents();
         initializeLayout();
-        loadPiecesIntoList();
     }
 
     private void initializeComponents() {
-        initializePieceList();
+        initializeChartPanel();
         initializeStatisticsPanel();
         initializeSplitPane();
     }
@@ -52,23 +51,23 @@ public class DashboardPanel extends JPanel {
 
     private void initializeSplitPane() {
         splitPane = new JSplitPane(
-                JSplitPane.HORIZONTAL_SPLIT, scrollPaneList, statisticsPanel
+                JSplitPane.HORIZONTAL_SPLIT, chartPanel, statisticsPanel
         );
         splitPane.setResizeWeight(0.5);
         splitPane.setEnabled(false);
     }
 
-    private void initializePieceList() {
-        listModel = new DefaultListModel<>();
-        pieceList = new JList<>(listModel);
-        scrollPaneList = new JScrollPane(pieceList);
-    }
+    private void initializeChartPanel() {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        dataset.setValue("Practiced", 12);
+        dataset.setValue("Not practiced", 8);
 
-    private void loadPiecesIntoList() {
-        for (PracticeSession session : sessionRepo.findAll()) {
-            if (session.getDate().equals(LocalDate.now()))
-                listModel.addElement(session.getPieceTitle());
-        }
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Practice Overview", dataset, true,
+                true, false
+        );
+        chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new Dimension(400, 300));
     }
 
     private void initializeStatisticsPanel() {
