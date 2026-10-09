@@ -65,7 +65,10 @@ public class DashboardPanel extends JPanel {
     }
 
     private void initializeChartPanel(LocalDate date) {
-        chartPanel = new ChartPanel(createChart(date));
+        if (sessionRepo.containsDate(date))
+            chartPanel = new ChartPanel(createChart(date));
+        else
+            chartPanel = new ChartPanel(createEmptyChartPanel());
         chartPanel.setPreferredSize(new Dimension(400,300));
     }
 
