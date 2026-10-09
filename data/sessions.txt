@@ -8,3 +8,6 @@
 2026-06-17|The Virtuoso Pianist (collection)|10|No 2, 60 bpm
 2026-06-14|Arabesque|20|First page, right hand only
 2026-10-07|Sonata facile|20|Repetition first movement
+2026-10-09|Sonata facile|20|Repetition third movement
+2026-10-09|Arabesque|45|Repetition whole piece
+2026-10-09|Träumerei|20|Practiced at 40 bpm

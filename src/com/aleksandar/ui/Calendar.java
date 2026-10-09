@@ -3,6 +3,8 @@ package com.aleksandar.ui;
 import javax.swing.*;
 import java.awt.*;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
@@ -78,6 +80,7 @@ public class Calendar extends JPanel {
             for (int col = 0; col < WEEKDAYS.length; col++) {
                 JPanel dayPanel = initializeDayCell(row, col);
                 calendarPanel.add(dayPanel);
+                makeClickable(dayPanel);
             }
         }
         return calendarPanel;
@@ -95,6 +98,15 @@ public class Calendar extends JPanel {
 
         dayPanel.add(label, BorderLayout.CENTER);
         return dayPanel;
+    }
+
+    private void makeClickable(JPanel panel) {
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("Cell clicked!");
+            }
+        });
     }
 
     private void loadDayLabels(YearMonth month) {

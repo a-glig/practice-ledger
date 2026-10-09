@@ -1,11 +1,15 @@
 package com.aleksandar.ui;
 
 import com.aleksandar.model.Piece;
+import com.aleksandar.model.PracticeSession;
 import com.aleksandar.repository.SessionRepository;
 import com.aleksandar.services.StatisticsService;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
 import javax.swing.*;
@@ -59,12 +63,20 @@ public class DashboardPanel extends JPanel {
 
     private void initializeChartPanel() {
         DefaultPieDataset dataset = new DefaultPieDataset();
-        dataset.setValue("Practiced", 12);
-        dataset.setValue("Not practiced", 8);
 
+        for (PracticeSession session: sessionRepo.findByDate(LocalDate.now())) {
+            dataset.setValue(
+                    session.getPieceTitle(),
+                    session.getDuration()
+            );
+        }
         JFreeChart chart = ChartFactory.createPieChart(
-                "Practice Overview", dataset, true,
+                "Overview", dataset, true,
                 true, false
+        );
+        PiePlot plot = (PiePlot) chart.getPlot();
+        plot.setLabelGenerator(
+                new StandardPieSectionLabelGenerator("{1} min")
         );
         chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(400, 300));
