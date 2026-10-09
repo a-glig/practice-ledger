@@ -44,8 +44,8 @@ public class DashboardPanel extends JPanel {
     }
 
     private void initializeComponents() {
-        calendar = new Calendar();
-        initializeChartPanel();
+        calendar = new Calendar(this);
+        initializeChartPanel(LocalDate.now());
         initializeStatisticsPanel();
         initializeSplitPane();
     }
@@ -64,10 +64,15 @@ public class DashboardPanel extends JPanel {
         splitPane.setEnabled(false);
     }
 
-    private void initializeChartPanel() {
+    private void initializeChartPanel(LocalDate date) {
+        chartPanel = new ChartPanel(createChart(date));
+        chartPanel.setPreferredSize(new Dimension(400,300));
+    }
+
+    private JFreeChart createChart(LocalDate date) {
         DefaultPieDataset dataset = new DefaultPieDataset();
 
-        for (PracticeSession session: sessionRepo.findByDate(LocalDate.now())) {
+        for (PracticeSession session: sessionRepo.findByDate(date)) {
             dataset.setValue(
                     session.getPieceTitle(),
                     session.getDuration()
@@ -81,8 +86,36 @@ public class DashboardPanel extends JPanel {
         plot.setLabelGenerator(
                 new StandardPieSectionLabelGenerator("{1} min")
         );
-        chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(400, 300));
+        return chart;
+    }
+
+    public void updateChartPanel(LocalDate date) {
+        JFreeChart chart;
+        if (sessionRepo.containsDate(date))
+            chart = createChart(date);
+        else
+            chart = createEmptyChartPanel();
+        chartPanel.setChart(chart);
+    }
+
+    private JFreeChart createEmptyChartPanel() {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        dataset.setValue("Not practiced", 1);
+
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Overview", dataset, false,
+                false, false
+        );
+
+        PiePlot plot = (PiePlot) chart.getPlot();
+        plot.setSectionPaint("Not practiced", new Color(216, 213, 213));
+        plot.setShadowPaint(null);
+        plot.setShadowXOffset(0);
+        plot.setShadowYOffset(0);
+        plot.setSectionOutlinesVisible(false);
+        plot.setLabelGenerator(null);
+
+        return chart;
     }
 
     private void initializeStatisticsPanel() {

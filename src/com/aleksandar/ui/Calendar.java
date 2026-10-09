@@ -12,6 +12,8 @@ import java.util.Arrays;
 
 public class Calendar extends JPanel {
 
+    private final DashboardPanel dashboard;
+
     private YearMonth shownMonth = YearMonth.from(LocalDate.now());
     private LocalDate selectedDate = LocalDate.now();
 
@@ -28,7 +30,8 @@ public class Calendar extends JPanel {
     private JButton previousMonth = new JButton("<");
     private JButton nextMonth = new JButton(">");
 
-    Calendar() {
+    Calendar(DashboardPanel dashboard) {
+        this.dashboard = dashboard;
         setLayout(new BorderLayout());
 
         add(initializeCalendarSettings(), BorderLayout.NORTH);
@@ -126,6 +129,10 @@ public class Calendar extends JPanel {
             shownMonth = shownMonth.plus(Period.ofMonths(1));
             updateCalendar(shownMonth);
         });
+        initializeActionListenersDays();
+    }
+
+    private void initializeActionListenersDays() {
         for (JButton[] row : dayButtons) {
             for (JButton button : row) {
                 button.addActionListener(e -> {
@@ -133,6 +140,7 @@ public class Calendar extends JPanel {
                     if (!clickedButton.getText().isEmpty()) {
                         int day = Integer.parseInt(clickedButton.getText());
                         selectedDate = shownMonth.atDay(day);
+                        dashboard.updateChartPanel(selectedDate);
                     }
                 });
             }
