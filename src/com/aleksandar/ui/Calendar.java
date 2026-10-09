@@ -3,8 +3,6 @@ package com.aleksandar.ui;
 import javax.swing.*;
 import java.awt.*;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
@@ -23,8 +21,7 @@ public class Calendar extends JPanel {
             "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"
     };
 
-    private JLabel[][] dayLabels = new JLabel[MAX_CALENDAR_ROWS][WEEKDAYS.length];
-    private JPanel[][] dayPanels = new JPanel[MAX_CALENDAR_ROWS][WEEKDAYS.length];
+    private JButton[][] dayButtons = new JButton[MAX_CALENDAR_ROWS][WEEKDAYS.length];
 
     private JButton previousMonth = new JButton("<");
     private JButton nextMonth = new JButton(">");
@@ -78,35 +75,17 @@ public class Calendar extends JPanel {
         ));
         for (int row = 0; row < MAX_CALENDAR_ROWS; row++) {
             for (int col = 0; col < WEEKDAYS.length; col++) {
-                JPanel dayPanel = initializeDayCell(row, col);
-                calendarPanel.add(dayPanel);
-                makeClickable(dayPanel);
+                JButton dayButton = initializeDayCell(row, col);
+                calendarPanel.add(dayButton);
             }
         }
         return calendarPanel;
     }
 
-    private JPanel initializeDayCell(int row, int col) {
-        JPanel dayPanel = new JPanel(new BorderLayout());
-        dayPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-
-        JLabel label = new JLabel("");
-        label.setHorizontalAlignment(JLabel.CENTER);
-
-        dayLabels[row][col] = label;
-        dayPanels[row][col] = dayPanel;
-
-        dayPanel.add(label, BorderLayout.CENTER);
+    private JButton initializeDayCell(int row, int col) {
+        JButton dayPanel = new JButton("");
+        dayButtons[row][col] = dayPanel;
         return dayPanel;
-    }
-
-    private void makeClickable(JPanel panel) {
-        panel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                System.out.println("Cell clicked!");
-            }
-        });
     }
 
     private void loadDayLabels(YearMonth month) {
@@ -115,7 +94,7 @@ public class Calendar extends JPanel {
         int currentCol = Arrays.asList(WEEKDAYS).indexOf(firstDay.toString());
 
         for (int day = 1; day <= month.lengthOfMonth(); day++) {
-            dayLabels[currentRow][currentCol].setText(String.valueOf(day));
+            dayButtons[currentRow][currentCol].setText(String.valueOf(day));
             if (currentCol == WEEKDAYS.length - 1) {
                 currentRow++;
                 currentCol = 0;
@@ -128,10 +107,10 @@ public class Calendar extends JPanel {
 
     private void hideEmptyRows(int lastFilledRow) {
         for (int row = lastFilledRow; row < MAX_CALENDAR_ROWS; row++) {
-            if (!dayLabels[row][0].getText().isEmpty())
+            if (!dayButtons[row][0].getText().isEmpty())
                 continue;
             for (int col = 0; col < WEEKDAYS.length; col++) {
-                dayPanels[row][col].setBorder(null);
+                dayButtons[row][col].setBorder(null);
             }
         }
     }
@@ -157,9 +136,9 @@ public class Calendar extends JPanel {
     private void resetCalendarGrid() {
         for (int row = 0; row < MAX_CALENDAR_ROWS; row++) {
             for (int col = 0; col < WEEKDAYS.length; col++) {
-                dayLabels[row][col].setText("");
-                dayPanels[row][col].setBorder(
-                        BorderFactory.createLineBorder(Color.black)
+                dayButtons[row][col].setText("");
+                dayButtons[row][col].setBorder(
+                        UIManager.getBorder("Button.border")
                 );
             }
         }
