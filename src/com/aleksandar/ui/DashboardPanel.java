@@ -16,6 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class DashboardPanel extends JPanel {
@@ -68,11 +69,27 @@ public class DashboardPanel extends JPanel {
         if (sessionRepo.containsDate(date))
             chartPanel = new ChartPanel(createChart(date));
         else
-            chartPanel = new ChartPanel(createEmptyChartPanel());
+            chartPanel = new ChartPanel(createEmptyChartPanel(date));
         chartPanel.setPreferredSize(new Dimension(400,300));
     }
 
     private JFreeChart createChart(LocalDate date) {
+        DefaultPieDataset dataset = createDataset(date);
+
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Overview " + formatDate(date), dataset, true,
+                true, false
+        );
+        PiePlot plot = (PiePlot) chart.getPlot();
+        plot.setLabelGenerator(
+                new StandardPieSectionLabelGenerator("{1} min")
+        );
+        plot.setSectionOutlinesVisible(false);
+
+        return chart;
+    }
+
+    private DefaultPieDataset createDataset(LocalDate date) {
         DefaultPieDataset dataset = new DefaultPieDataset();
 
         for (PracticeSession session: sessionRepo.findByDate(date)) {
@@ -81,15 +98,12 @@ public class DashboardPanel extends JPanel {
                     session.getDuration()
             );
         }
-        JFreeChart chart = ChartFactory.createPieChart(
-                "Overview", dataset, true,
-                true, false
-        );
-        PiePlot plot = (PiePlot) chart.getPlot();
-        plot.setLabelGenerator(
-                new StandardPieSectionLabelGenerator("{1} min")
-        );
-        return chart;
+
+        return dataset;
+    }
+
+    private String formatDate(LocalDate date) {
+        return date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     public void updateChartPanel(LocalDate date) {
@@ -97,21 +111,21 @@ public class DashboardPanel extends JPanel {
         if (sessionRepo.containsDate(date))
             chart = createChart(date);
         else
-            chart = createEmptyChartPanel();
+            chart = createEmptyChartPanel(date);
         chartPanel.setChart(chart);
     }
 
-    private JFreeChart createEmptyChartPanel() {
+    private JFreeChart createEmptyChartPanel(LocalDate date) {
         DefaultPieDataset dataset = new DefaultPieDataset();
         dataset.setValue("Not practiced", 1);
 
         JFreeChart chart = ChartFactory.createPieChart(
-                "Overview", dataset, false,
+                "Overview " + formatDate(date), dataset, true,
                 false, false
         );
 
         PiePlot plot = (PiePlot) chart.getPlot();
-        plot.setSectionPaint("Not practiced", new Color(216, 213, 213));
+        plot.setSectionPaint("Not practiced", new Color(240, 240, 240));
         plot.setShadowPaint(null);
         plot.setShadowXOffset(0);
         plot.setShadowYOffset(0);
@@ -146,14 +160,14 @@ public class DashboardPanel extends JPanel {
     }
 
     private void addStatistics(JPanel panel, LocalDate day) {
-        panel.add(new JLabel(
-                "Practice time (day): " + statistics.getPracticeDurationForDate(day))
+        panel.add(new JLabel("Practice time (day): " +
+                statistics.getPracticeDurationForDate(day) + " min")
         );
-        panel.add(new JLabel(
-                "Practice time (week): " + statistics.getPracticeDurationForWeek(day))
+        panel.add(new JLabel("Practice time (week): " +
+                statistics.getPracticeDurationForWeek(day) + " min")
         );
-        panel.add(new JLabel(
-                "Days practiced this month: " + statistics.daysPracticedInMonth(day))
+        panel.add(new JLabel("Days practiced this month: " +
+                statistics.daysPracticedInMonth(day))
         );
     }
 
