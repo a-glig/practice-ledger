@@ -1,7 +1,9 @@
+Invention No 1|Bach|3|Repertoire
 Sonata facile|Mozart|4|Repertoire
 Prelude C sharp minor|Rachmaninoff|6|Repertoire
 Intermezzo A major|Brahms|5|Repertoire
-Arabesque|Burgmüller|3|Technique
+Sonatina III (Opus 36)|Clementi|3|Repertoire
+Sonatina IV (Opus 36)|Clementi|3|Repertoire
 The Virtuoso Pianist (collection)|Hanon|3|Technique
+Von fremden Ländern und Menschen|Schumann|3|Repertoire
 Träumerei|Schumann|4|Repertoire
-Invention No 1|Bach|3|Repertoire

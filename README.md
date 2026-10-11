@@ -6,10 +6,11 @@ Swing as a personal learning project.
 
 ## Screenshots
 
-![Session Panel](screenshots/session_panel.png)
+![Dashboard Panel](screenshots/dashboard_panel.png)
 
 ## Features
 
+- Dashboard including calendar and statistics
 - Add/delete musical pieces
 - Add/delete practice sessions
 - Store data locally in .txt files
@@ -43,7 +44,6 @@ Main.java
 
 - Changing entries 
 - Search and Filtering
-- Statistics Dashboard
 - Export functionality
 
 ## Licence
