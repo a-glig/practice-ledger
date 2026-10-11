@@ -13,6 +13,8 @@ public class AddSessionDialog extends JDialog {
     private PieceRepository pieceRepo;
     private SessionPanel sessionPanel;
 
+    private LocalDate date;
+
     private ArrayList<String> pieceTitleList;
     JComboBox<String> pieceTitles;
 
@@ -24,11 +26,13 @@ public class AddSessionDialog extends JDialog {
     AddSessionDialog(
             MainFrame frame,
             PieceRepository pieceRepo,
-            SessionPanel sessionPanel
+            SessionPanel sessionPanel,
+            LocalDate date
     ) {
         super(frame, "Add Session", true);
         this.pieceRepo = pieceRepo;
         this.sessionPanel = sessionPanel;
+        this.date = date;
 
         initializeComponents();
         initializeLayout();
@@ -77,12 +81,12 @@ public class AddSessionDialog extends JDialog {
     private void initializeActionListener() {
         save.addActionListener(e -> {
             if (isValidInput()) {
-                LocalDate selectedDate = sessionPanel.getSelectedDate();
+                LocalDate sessionDate = date;
                 String pieceTitle = getPieceTitle();
                 int duration = getDuration();
                 String notes = getNotesText();
                 sessionPanel.addSessionToTable(new PracticeSession(
-                        selectedDate, pieceTitle, duration, notes
+                        sessionDate, pieceTitle, duration, notes
                 ));
                 dispose();
             }

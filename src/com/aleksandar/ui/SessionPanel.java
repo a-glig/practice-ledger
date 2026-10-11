@@ -32,6 +32,7 @@ public class SessionPanel extends JPanel {
     };
     private JSplitPane splitPane;
 
+    private JButton addSessionToday;
     private JButton addSession;
     private JButton deleteSession;
 
@@ -54,7 +55,8 @@ public class SessionPanel extends JPanel {
         initializeSessionTable();
         initializeSplitPane();
 
-        addSession = new JButton("Add Session");
+        addSessionToday = new JButton("Add Today's Session");
+        addSession = new JButton("Add Session for Selected Day");
         deleteSession = new JButton("Delete Session");
     }
 
@@ -95,15 +97,20 @@ public class SessionPanel extends JPanel {
 
     private JPanel initializeButtonPanel() {
         JPanel panel = new JPanel();
+        panel.add(addSessionToday);
         panel.add(addSession);
         panel.add(deleteSession);
         return panel;
     }
 
     private void initializeActionListeners() {
+        addSessionToday.addActionListener(e -> {
+            if (!pieceRepoEmpty())
+                new AddSessionDialog(frame, pieceRepo, this, LocalDate.now());
+        });
         addSession.addActionListener(e -> {
             if (!pieceRepoEmpty())
-                new AddSessionDialog(frame, pieceRepo, this);
+                new AddSessionDialog(frame, pieceRepo, this, getSelectedDate());
         });
         deleteSession.addActionListener(e-> {
             int selectedRow = sessionTable.getSelectedRow();
